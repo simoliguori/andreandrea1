@@ -18,8 +18,7 @@ content:
         type: string
         description: "Il nome grande in apertura (con l'effetto glitch)."
       - name: righe
-        label: Righe sotto al nome
-        description: "Fino a 4 righe (es. Pianista, Performer). Le barre /// vengono aggiunte in automatico."
+        label: "Righe sotto al nome (max 4 — le barre /// si aggiungono da sole)"
         type: object
         list:
           max: 4
@@ -54,8 +53,7 @@ content:
         type: string
         description: "Se vuoto resta quello italiano."
       - name: paragrafi
-        label: "Biografia — paragrafi"
-        description: "Il primo paragrafo viene mostrato grande, gli altri più piccoli sotto."
+        label: "Biografia — paragrafi (il primo è mostrato grande)"
         type: object
         list:
           collapsible:
@@ -78,8 +76,7 @@ content:
               media: false
               switcher: false
       - name: citazioni
-        label: Citazioni dalla stampa
-        description: "Le frasi grandi in corsivo (fino a 3 stanno su una riga)."
+        label: "Citazioni dalla stampa (frasi grandi in corsivo, 3 per riga)"
         type: object
         list:
           collapsible:
