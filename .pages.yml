@@ -457,66 +457,51 @@ content:
     path: _data/fasce.yml
     format: yaml
     fields:
-      - name: dopo_info
-        label: "Fascia dopo \"Info\""
-        type: object
-        fields:
-          - name: foto
-            label: Foto
-            type: image
-            description: "La foto a tutta larghezza. Se vuota la fascia non viene mostrata."
-          - name: didascalia
-            label: "Didascalia"
-            type: rich-text
-            description: "Il testo piccolo in basso a sinistra."
-            options:
-              format: html
-              media: false
-              switcher: false
-          - name: grassetto_rosso
-            label: Grassetto in rosso Nema
-            type: boolean
-            description: "Il testo in grassetto della didascalia diventa rosso (per progetti Nema)."
-      - name: dopo_live
-        label: "Fascia dopo \"Live\""
-        type: object
-        fields:
-          - name: foto
-            label: Foto
-            type: image
-            description: "La foto a tutta larghezza. Se vuota la fascia non viene mostrata."
-          - name: didascalia
-            label: "Didascalia"
-            type: rich-text
-            description: "Il testo piccolo in basso a sinistra."
-            options:
-              format: html
-              media: false
-              switcher: false
-          - name: grassetto_rosso
-            label: Grassetto in rosso Nema
-            type: boolean
-            description: "Il testo in grassetto della didascalia diventa rosso (per progetti Nema)."
-      - name: dopo_video
-        label: "Fascia dopo \"Video\""
-        type: object
-        fields:
-          - name: foto
-            label: Foto
-            type: image
-            description: "La foto a tutta larghezza. Se vuota la fascia non viene mostrata."
-          - name: didascalia
-            label: "Didascalia"
-            type: rich-text
-            description: "Il testo piccolo in basso a sinistra."
-            options:
-              format: html
-              media: false
-              switcher: false
-          - name: grassetto_rosso
-            label: Grassetto in rosso Nema
-            type: boolean
-            description: "Il testo in grassetto della didascalia diventa rosso (per progetti Nema)."
+      - name: dopo_info_foto
+        label: 'Fascia dopo "Info" — foto'
+        type: image
+        description: "La foto a tutta larghezza. Se la togli, la fascia non viene mostrata."
+      - name: dopo_info_didascalia
+        label: 'Fascia dopo "Info" — didascalia'
+        type: rich-text
+        description: "Il testo piccolo in basso a sinistra."
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: dopo_info_grassetto_rosso
+        label: 'Fascia dopo "Info" — grassetto in rosso Nema'
+        type: boolean
+      - name: dopo_live_foto
+        label: 'Fascia dopo "Live" — foto'
+        type: image
+        description: "La foto a tutta larghezza. Se la togli, la fascia non viene mostrata."
+      - name: dopo_live_didascalia
+        label: 'Fascia dopo "Live" — didascalia'
+        type: rich-text
+        description: "Il testo piccolo in basso a sinistra."
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: dopo_live_grassetto_rosso
+        label: 'Fascia dopo "Live" — grassetto in rosso Nema'
+        type: boolean
+      - name: dopo_video_foto
+        label: 'Fascia dopo "Video" — foto'
+        type: image
+        description: "La foto a tutta larghezza. Se la togli, la fascia non viene mostrata."
+      - name: dopo_video_didascalia
+        label: 'Fascia dopo "Video" — didascalia'
+        type: rich-text
+        description: "Il testo piccolo in basso a sinistra."
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: dopo_video_grassetto_rosso
+        label: 'Fascia dopo "Video" — grassetto in rosso Nema'
+        type: boolean
 
   - name: contatti
     label: "04 · Contatti"
