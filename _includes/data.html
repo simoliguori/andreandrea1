@@ -1,0 +1,26 @@
+{%- comment -%}
+  Formatta una data (o un intervallo) in italiano o inglese.
+  Parametri: d (data), f (data fine, opzionale), lang ("it"/"en"), short (true = mese abbreviato, giorno a 2 cifre)
+{%- endcomment -%}
+{%- if include.short -%}
+  {%- if include.lang == "en" -%}{%- assign mesi = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," -%}
+  {%- else -%}{%- assign mesi = "Gen,Feb,Mar,Apr,Mag,Giu,Lug,Ago,Set,Ott,Nov,Dic" | split: "," -%}{%- endif -%}
+  {%- assign fd = "%d" -%}
+{%- else -%}
+  {%- if include.lang == "en" -%}{%- assign mesi = "January,February,March,April,May,June,July,August,September,October,November,December" | split: "," -%}
+  {%- else -%}{%- assign mesi = "gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre" | split: "," -%}{%- endif -%}
+  {%- assign fd = "%-d" -%}
+{%- endif -%}
+{%- assign g1 = include.d | date: fd -%}
+{%- assign i1 = include.d | date: "%-m" | minus: 1 -%}
+{%- assign m1 = mesi[i1] -%}
+{%- assign a1 = include.d | date: "%Y" -%}
+{%- if include.f and include.f != "" -%}
+  {%- assign g2 = include.f | date: fd -%}
+  {%- assign i2 = include.f | date: "%-m" | minus: 1 -%}
+  {%- assign m2 = mesi[i2] -%}
+  {%- assign a2 = include.f | date: "%Y" -%}
+  {%- if a1 == a2 and m1 == m2 -%}{{ g1 }}–{{ g2 }} {{ m1 }} {{ a1 }}
+  {%- elsif a1 == a2 -%}{{ g1 }} {{ m1 }} – {{ g2 }} {{ m2 }} {{ a1 }}
+  {%- else -%}{{ g1 }} {{ m1 }} {{ a1 }} – {{ g2 }} {{ m2 }} {{ a2 }}{%- endif -%}
+{%- else -%}{{ g1 }} {{ m1 }} {{ a1 }}{%- endif -%}

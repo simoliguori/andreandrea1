@@ -1,0 +1,162 @@
+# Eventi del sito — si modificano dal pannello Pages CMS.
+# Data futura → "Prossimi" (agenda). Data passata → "Passati" (card con foto).
+- titolo: MAXXI Roma · Piano City Roma
+  data: "2026-10-04"
+  ora: h12
+  sottotitolo_it: Museo nazionale delle arti del XXI secolo
+  sottotitolo_en: National Museum of 21st Century Arts
+  luogo_it: MAXXI · Roma
+  luogo_en: MAXXI · Rome
+  mostra_data: true
+  programma: Philip Glass — <i>Piano Études</i>
+
+- titolo: Piazza Trilussa, Roma · Piano City Roma
+  data: "2026-10-04"
+  ora: h17
+  sottotitolo_it: Programma in via di definizione
+  sottotitolo_en: Programme to be announced
+  luogo_it: Piazza Trilussa · Roma
+  luogo_en: Piazza Trilussa · Rome
+  mostra_data: true
+
+- titolo: Clärchens Ballhaus — Spiegelsaal, Berlino
+  data: "2026-12-06"
+  sottotitolo_it: con Lorenzo Dainelli <i>(clarinetto)</i> · Erica Piccotti <i>(violoncello)</i> · Anne Luise Kramb <i>(violino)</i>
+  sottotitolo_en: with Lorenzo Dainelli <i>(clarinet)</i> · Erica Piccotti <i>(cello)</i> · Anne Luise Kramb <i>(violin)</i>
+  luogo_it: Clärchens Ballhaus · Berlino
+  luogo_en: Clärchens Ballhaus · Berlin
+  mostra_data: true
+  programma: Olivier Messiaen · Alban Berg · Arvo Pärt · Brian Eno
+
+- titolo: Performative 06
+  data: "2026-09-11"
+  data_fine: "2026-09-13"
+  sottotitolo_it: <b>MAXXI L'Aquila</b> · residenza artistica &amp; performance
+  sottotitolo_en: <b>MAXXI L'Aquila</b> · artist residency &amp; performances
+  luogo_it: Palazzo Ardinghelli, L'Aquila
+  luogo_en: Palazzo Ardinghelli, L'Aquila
+  mostra_data: true
+  descrizione_it: "Tre giorni di residenza e performance dentro Palazzo Ardinghelli: pianoforte preparato, ascolto-durata e il corpo del suono negli spazi del museo — tra prime assolute e repertorio radicale."
+  descrizione_en: "Three days of residency and performance inside Palazzo Ardinghelli: prepared piano, durational listening and the body of sound in the museum's spaces — between world premieres and radical repertoire."
+  programma: Francesco Filidei · Daniele Lombardi <i>(prime assolute)</i> · Matthew Shlomowitz · John Cage · Philip Glass
+  copertina: /uploads/aq1.jpg
+  formato_copertina: normale
+  galleria:
+    - foto: /uploads/aq3.jpg
+      alt: Performative06 — pianoforte e proiezione, MAXXI L'Aquila
+    - foto: /uploads/aq2.jpg
+      alt: Andrea Riccio con la partitura — Performative06, MAXXI L'Aquila
+    - foto: /uploads/aq4.jpg
+      alt: Performative06 — performance con pubblico, MAXXI L'Aquila
+    - foto: /uploads/aq5.jpg
+      alt: Andrea Riccio di profilo — Performative06, MAXXI L'Aquila
+  credito_foto: Luca Eleuteri · courtesy Fondazione MAXXI
+
+- titolo: Devi Morire
+  data: "2026-01-01"
+  etichetta: 12h · durational
+  sottotitolo_it: (Dissing Love) · due pianoforti con <b>Marino Formenti</b>
+  sottotitolo_en: (Dissing Love) · two pianos with <b>Marino Formenti</b>
+  luogo_it: Museo Nitsch — Fondazione Morra · Napoli · performance-durata 12 ore
+  luogo_en: Museo Nitsch — Fondazione Morra · Naples · 12-hour durational performance
+  mostra_data: false
+  descrizione_it: Due pianoforti, «le musiche di nessuno». Insieme <i>battle</i> e responsorio: «DEVI MORIRE», <i>memento mori</i> — il più tenerissimo augurio del nulla. Lo spazio si svuota e si riempie; lo spettatore ascolta, non-esiste, gioca con loro.
+  descrizione_en: Two pianos, «nobody's music». At once a <i>battle</i> and a responsory: «DEVI MORIRE», <i>memento mori</i> — the most tender wish for nothingness. Space empties and fills; the spectator listens, un-exists, plays with them.
+  copertina: /uploads/dm8.jpg
+  formato_copertina: ritaglio
+  galleria:
+    - foto: /uploads/dm3.jpg
+      alt: DEVI MORIRE — Museo Nitsch
+    - foto: /uploads/dm4.jpg
+      alt: DEVI MORIRE — con Marino Formenti
+    - foto: /uploads/dm9.jpg
+      alt: DEVI MORIRE — Museo Nitsch
+    - foto: /uploads/dm7.jpg
+      alt: DEVI MORIRE — Marino Formenti
+    - foto: /uploads/dm1.jpg
+      alt: DEVI MORIRE — Museo Nitsch
+    - foto: /uploads/dm10.jpg
+      alt: DEVI MORIRE — Museo Nitsch
+    - foto: /uploads/dm6.jpg
+      alt: DEVI MORIRE — partiture
+
+- titolo: Isole Sonore
+  data: "2025-11-26"
+  sottotitolo_it: Recital · direzione artistica <b>Cesare Picco</b>
+  sottotitolo_en: Recital · artistic direction <b>Cesare Picco</b>
+  luogo_it: Aula Magna, Università Bocconi · Milano
+  luogo_en: Aula Magna, Bocconi University · Milan
+  mostra_data: true
+  descrizione_it: Un recital raffinato ed <i>esoterico</i> sulle dimensioni spirituali del suono — Gurdjieff, Scelsi, Satie e Battiato, voci unite dal pensiero orientale e da un approccio trascendentale alla musica. «Nell'esecuzione estemporanea si abbandona il Sé e ci si lascia attraversare dalle energie.»
+  descrizione_en: A refined, <i>esoteric</i> recital on the spiritual dimensions of sound — Gurdjieff, Scelsi, Satie and Battiato, voices bound by Eastern thought and a transcendental approach to music. «In extemporaneous playing one abandons the Self and lets oneself be traversed by energies.»
+  programma: G. I. Gurdjieff · Giacinto Scelsi · Erik Satie · Franco Battiato
+  copertina: /uploads/p6.jpg
+  formato_copertina: normale
+  galleria:
+    - foto: /uploads/p5.jpg
+      alt: Andrea Riccio — Isole Sonore, dettaglio
+    - foto: /uploads/p1.jpg
+      alt: Andrea Riccio — Isole Sonore
+    - foto: /uploads/p2.jpg
+      alt: Andrea Riccio — Isole Sonore
+    - foto: /uploads/p3.jpg
+      alt: Andrea Riccio — Isole Sonore
+    - foto: /uploads/p4.jpg
+      alt: Andrea Riccio — Isole Sonore
+  link:
+    - testo: Musicpaper
+      url: https://www.musicpaper.it/milano-isole-sonore-cesare-picco-pianoforte-esoterico-andrea-riccio/
+
+- titolo: Resonant Bends
+  data: "2025-10-05"
+  sottotitolo_it: <span class="nema-mark">Nema Ensemble</span> × mi·ɽài — Contemporary Speech
+  luogo_it: Spazio Arena · Avellino
+  mostra_data: true
+  descrizione_it: Un concerto sul timbro come <i>forza generativa della forma</i>: dal pensiero spettrale francese alle radici in Debussy e Messiaen, la forma emerge dalla trasformazione interna del suono — fino a <i>Nuages</i> di Debussy. Visual audio-reattivi improvvisati in TouchDesigner.
+  descrizione_en: A concert on timbre as a <i>generative force of form</i>: from French spectral thought to roots in Debussy and Messiaen, form emerges from the inner transformation of sound — up to Debussy's <i>Nuages</i>. Real-time audio-reactive visuals improvised in TouchDesigner.
+  programma: Francesco De Simone · Claude Debussy · Tristan Murail · Rouzbeh Rafie · NEMA · Yan Maresz · Olivier Messiaen
+  copertina: /uploads/rb_locandina.jpg
+  formato_copertina: locandina
+  crediti:
+    - nome: Vincenzo Gaudino
+      ruolo: Flauto
+    - nome: Francesco Filisdeo
+      ruolo: Clarinetto
+    - nome: Leonardo Ricci
+      ruolo: Violino
+    - nome: Davide Maria Viola
+      ruolo: Violoncello
+    - nome: Andrea Riccio
+      ruolo: Pianoforte
+      evidenzia: true
+    - nome: Francesco De Simone
+      ruolo: Elettronica
+    - nome: Cosimo Abbate
+      ruolo: Direttore
+    - nome: Simone Liguori · mi·ɽài
+      ruolo: Visual
+  link:
+    - testo: YouTube
+      url: https://www.youtube.com/watch?v=6_2Ete1W8p8&list=PLfsmYX1gM9Xe6KlpNEazfUuI70T0ItmxJ
+    - testo: eccerobot.xyz
+      url: https://eccerobot.xyz
+    - testo: "@nemaensemble"
+      url: https://www.instagram.com/nemaensemble/
+
+- titolo: Concerto Presagi
+  data: "2025-09-19"
+  sottotitolo_it: Recital solo · Associazione Filharmonie
+  sottotitolo_en: Solo recital · Associazione Filharmonie
+  luogo_it: Cappella Santa Maria, Certosa di Firenze · Firenze
+  luogo_en: Cappella Santa Maria, Certosa di Firenze · Florence
+  mostra_data: true
+  descrizione_it: Un recital dal classico al contemporaneo, tra spiritualità e trascendenza. In programma anche <i>tre prime esecuzioni assolute</i> di A. Maiello, R. Pinelli ed E. Chisci.
+  descrizione_en: A recital from the classical to the contemporary, between spirituality and transcendence. The programme also features <i>three world premieres</i> by A. Maiello, R. Pinelli and E. Chisci.
+  programma: John Adams · Erik Satie · William Duckworth · Giacinto Scelsi · Franco Battiato · Claude Debussy · Maiello · Pinelli · Chisci
+  copertina: /uploads/piano.jpg
+  formato_copertina: normale
+  link:
+    - testo: Video
+      url: https://youtu.be/n3BwHO00VPI
+    - testo: lafilharmonie.com
+      url: https://www.lafilharmonie.com/event/concerto-presagi/

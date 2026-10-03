@@ -1,0 +1,164 @@
+# Pannello Pages CMS (https://app.pagescms.org) per il sito di Andrea Riccio.
+media:
+  input: uploads
+  output: /uploads
+  categories: [image]
+  rename: safe
+
+content:
+  - name: eventi
+    label: Eventi
+    type: file
+    path: _data/eventi.yml
+    format: yaml
+    list:
+      collapsible:
+        collapsed: true
+        summary: "{data} · {titolo}"
+    fields:
+      - name: titolo
+        label: Titolo
+        type: string
+        required: true
+      - name: data
+        label: Data
+        type: date
+        required: true
+        description: Se la data è futura l'evento va in "Prossimi", altrimenti in "Passati". Il sito si aggiorna da solo ogni notte.
+        options:
+          format: yyyy-MM-dd
+      - name: data_fine
+        label: Data di fine (facoltativa)
+        type: date
+        description: Solo per eventi di più giorni.
+        options:
+          format: yyyy-MM-dd
+      - name: ora
+        label: Orario (facoltativo)
+        type: string
+        description: Per esempio h21
+      - name: mostra_data
+        label: Mostra la data accanto al luogo
+        type: boolean
+        default: true
+      - name: etichetta
+        label: Etichetta (facoltativa)
+        type: string
+        description: Il testo piccolo accanto al titolo. Se vuoto, viene usato l'anno.
+      - name: sottotitolo_it
+        label: Sottotitolo (IT)
+        type: string
+      - name: sottotitolo_en
+        label: Sottotitolo (EN)
+        type: string
+      - name: luogo_it
+        label: Luogo (IT)
+        type: string
+        description: Per esempio "Teatro San Carlo · Napoli"
+      - name: luogo_en
+        label: Luogo (EN)
+        type: string
+        description: Se vuoto viene usato quello italiano.
+      - name: descrizione_it
+        label: Descrizione (IT)
+        type: text
+      - name: descrizione_en
+        label: Descrizione (EN)
+        type: text
+      - name: programma
+        label: Programma
+        type: string
+        description: Per esempio "Claude Debussy · John Cage · Philip Glass"
+      - name: copertina
+        label: Foto di copertina
+        type: image
+      - name: formato_copertina
+        label: Formato della copertina
+        type: select
+        default: normale
+        options:
+          values:
+            - name: normale
+              label: Normale
+            - name: ritaglio
+              label: Ritagliata (verticale 4:5)
+            - name: locandina
+              label: Locandina
+      - name: galleria
+        label: Galleria foto
+        type: object
+        description: La prima foto viene mostrata larga.
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{alt}"
+        fields:
+          - name: foto
+            label: Foto
+            type: image
+            required: true
+          - name: alt
+            label: Descrizione della foto (per accessibilità)
+            type: string
+      - name: credito_foto
+        label: Crediti fotografici
+        type: string
+        description: Per esempio "Luca Eleuteri · courtesy Fondazione MAXXI"
+      - name: crediti
+        label: Musicisti e crediti
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nome} · {ruolo}"
+        fields:
+          - name: nome
+            label: Nome
+            type: string
+          - name: ruolo
+            label: Ruolo
+            type: string
+          - name: evidenzia
+            label: Evidenzia
+            type: boolean
+      - name: link
+        label: Link
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{testo}"
+        fields:
+          - name: testo
+            label: Testo del link
+            type: string
+          - name: url
+            label: Indirizzo (URL)
+            type: string
+
+  - name: video
+    label: Video
+    type: file
+    path: _data/video.yml
+    format: yaml
+    list:
+      collapsible:
+        collapsed: true
+        summary: "{titolo}"
+    fields:
+      - name: youtube
+        label: Link YouTube
+        type: string
+        required: true
+        description: Incolla il link del video, per esempio https://www.youtube.com/watch?v=...
+      - name: titolo
+        label: Titolo
+        type: string
+        required: true
+      - name: autore
+        label: Autore / interpreti
+        type: string
+      - name: miniatura
+        label: Miniatura (facoltativa)
+        type: image
+        description: Se vuota viene usata quella di YouTube.

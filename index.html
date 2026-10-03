@@ -1,3 +1,5 @@
+---
+---
 <meta charset="utf-8">
 <title>Andrea Riccio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -524,6 +526,7 @@
   .program{font-family:var(--f-mono);font-size:12px;color:var(--smoke);margin:2px 0;line-height:1.85}
   .program .plabel{display:block;color:var(--iron);text-transform:uppercase;letter-spacing:.16em;font-size:10px;margin-bottom:5px}
   @media (max-width:720px){.event{grid-template-columns:1fr}.event-flyer{max-width:340px}}
+  .event.noflyer{grid-template-columns:1fr}
   .events{display:flex;flex-direction:column;gap:clamp(52px,9vh,104px)}
   .event-flyer.crop45 img{aspect-ratio:4/5;object-fit:cover;object-position:34% 42%}
 
@@ -573,6 +576,9 @@
   /* photobands: fade+de-blur without vertical shift */
   .photoband.reveal,.photoband.reveal.in{transform:none}
 
+  .sitecredit{margin:14px 0 0;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--iron)}
+  .sitecredit a{color:var(--smoke);transition:color .3s}
+  .sitecredit a:hover{color:var(--glow)}
   .footnote{margin:32px 0 0;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--iron)}
 
   /* ============ CONTACT / FOOTER ============ */
@@ -780,143 +786,100 @@
     <div class="sec-head reveal"><span class="idx">01</span><span data-en="Live · Events">Live · Eventi</span></div>
 
     <h4 class="live-sub reveal" data-en="Upcoming">Prossimi</h4>
+    {%- comment -%} Divide gli eventi: data (o data fine) da oggi in poi → Prossimi, altrimenti → Passati {%- endcomment -%}
+    {%- assign oggi = site.time | date: "%Y-%m-%d" -%}
+    {%- assign prossimi = "" | split: "" -%}
+    {%- assign passati = "" | split: "" -%}
+    {%- for e in site.data.eventi -%}
+      {%- if e.data == nil or e.data == "" -%}{%- continue -%}{%- endif -%}
+      {%- assign inizio = e.data | date: "%Y-%m-%d" -%}
+      {%- assign fine = inizio -%}
+      {%- if e.data_fine and e.data_fine != "" -%}{%- assign fine = e.data_fine | date: "%Y-%m-%d" -%}{%- endif -%}
+      {%- assign chiave = inizio | append: " " | append: e.ora | append: "|" | append: forloop.index0 -%}
+      {%- if fine >= oggi -%}{%- assign prossimi = prossimi | push: chiave -%}{%- else -%}{%- assign passati = passati | push: chiave -%}{%- endif -%}
+    {%- endfor -%}
+    {%- assign prossimi = prossimi | sort -%}
+    {%- assign passati = passati | sort | reverse %}
     <ul class="agenda reveal">
+      {%- for k in prossimi -%}
+      {%- assign i = k | split: "|" | last | plus: 0 -%}
+      {%- assign e = site.data.eventi[i] -%}
+      {%- capture data_en -%}{% include data.html d=e.data f=e.data_fine lang="en" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}{%- endcapture %}
       <li>
-        <span class="ag-date">04 Ott 2026 <span class="ag-time">h12</span></span>
+        <span class="ag-date" data-en="{{ data_en | escape }}">{% include data.html d=e.data f=e.data_fine lang="it" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}</span>
         <div class="ag-body">
-          <div class="ag-title">MAXXI Roma · Piano City Roma</div>
-          <div class="ag-meta" data-en="National Museum of 21st Century Arts">Museo nazionale delle arti del XXI secolo</div>
-          <div class="ag-prog">Philip Glass — <i>Piano Études</i></div>
+          <div class="ag-title">{{ e.titolo }}</div>
+          {%- if e.sottotitolo_it %}
+          <div class="ag-meta"{% if e.sottotitolo_en %} data-en="{{ e.sottotitolo_en | escape }}"{% endif %}>{{ e.sottotitolo_it }}</div>
+          {%- endif -%}
+          {%- if e.programma %}
+          <div class="ag-prog">{{ e.programma }}</div>
+          {%- endif %}
         </div>
       </li>
+      {%- else %}
       <li>
-        <span class="ag-date">04 Ott 2026 <span class="ag-time">h17</span></span>
-        <div class="ag-body">
-          <div class="ag-title">Piazza Trilussa, Roma · Piano City Roma</div>
-          <div class="ag-meta" data-en="Programme to be announced">Programma in via di definizione</div>
-        </div>
+        <span class="ag-date"></span>
+        <div class="ag-body"><div class="ag-meta" data-en="New dates coming soon">Nuove date in arrivo</div></div>
       </li>
-      <li>
-        <span class="ag-date">06 Dic 2026</span>
-        <div class="ag-body">
-          <div class="ag-title">Clärchens Ballhaus — Spiegelsaal, Berlino</div>
-          <div class="ag-meta" data-en="with Lorenzo Dainelli <i>(clarinet)</i> · Erica Piccotti <i>(cello)</i> · Anne Luise Kramb <i>(violin)</i>">con Lorenzo Dainelli <i>(clarinetto)</i> · Erica Piccotti <i>(violoncello)</i> · Anne Luise Kramb <i>(violino)</i></div>
-          <div class="ag-prog">Olivier Messiaen · Alban Berg · Arvo Pärt · Brian Eno</div>
-        </div>
-      </li>
+      {%- endfor %}
     </ul>
 
     <h4 class="live-sub reveal" data-en="Past">Passati</h4>
     <div class="events">
+    {%- for k in passati -%}
+    {%- assign i = k | split: "|" | last | plus: 0 -%}
+    {%- assign e = site.data.eventi[i] -%}
+    {%- capture meta_it -%}{{ e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_it %} — {% endif %}{% include data.html d=e.data f=e.data_fine lang="it" %}{% endunless %}{%- endcapture -%}
+    {%- capture meta_en -%}{{ e.luogo_en | default: e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_en or e.luogo_it %} — {% endif %}{% include data.html d=e.data f=e.data_fine lang="en" %}{% endunless %}{%- endcapture %}
 
-    <div class="event reveal">
-      <div class="event-flyer">
-        <img src="aq1.jpg" data-full="aq1.jpg" alt="Andrea Riccio al pianoforte preparato — Performative06, MAXXI L'Aquila">
+    <div class="event reveal{% unless e.copertina %} noflyer{% endunless %}">
+      {%- if e.copertina %}
+      <div class="event-flyer{% if e.formato_copertina == 'ritaglio' %} crop45{% elsif e.formato_copertina == 'locandina' %} poster{% endif %}">
+        <img src="{{ e.copertina | relative_url }}" data-full="{{ e.copertina | relative_url }}" alt="{{ e.titolo | strip_html | escape }}{% if e.luogo_it %} — {{ e.luogo_it | strip_html | escape }}{% endif %}">
       </div>
+      {%- endif %}
       <div class="event-body">
-        <div class="rb-head"><span class="rb-year">2026</span><h3 class="rb-title">Performative&nbsp;06</h3></div>
-        <p class="rb-sub" data-en="<b>MAXXI L'Aquila</b> · artist residency &amp; performances"><b>MAXXI L'Aquila</b> · residenza artistica &amp; performance</p>
-        <p class="event-meta" data-en="Palazzo Ardinghelli, L'Aquila — 11–13 September 2026">Palazzo Ardinghelli, L'Aquila — 11–13 settembre 2026</p>
-        <p class="rb-desc" data-en="Three days of residency and performance inside Palazzo Ardinghelli: prepared piano, durational listening and the body of sound in the museum's spaces — between world premieres and radical repertoire.">Tre giorni di residenza e performance dentro Palazzo Ardinghelli: pianoforte preparato, ascolto-durata e il corpo del suono negli spazi del museo — tra prime assolute e repertorio radicale.</p>
-        <p class="program"><span class="plabel" data-en="Programme">Programma</span> Francesco Filidei · Daniele Lombardi <i data-en="(world premieres)">(prime assolute)</i> · Matthew Shlomowitz · John Cage · Philip Glass</p>
-        <div class="gallery">
-          <img src="aq3.jpg" class="wide" data-full="aq3.jpg" alt="Performative06 — pianoforte e proiezione, MAXXI L'Aquila" loading="lazy">
-          <img src="aq2.jpg" data-full="aq2.jpg" alt="Andrea Riccio con la partitura — Performative06, MAXXI L'Aquila" loading="lazy">
-          <img src="aq4.jpg" data-full="aq4.jpg" alt="Performative06 — performance con pubblico, MAXXI L'Aquila" loading="lazy">
-          <img src="aq5.jpg" data-full="aq5.jpg" alt="Andrea Riccio di profilo — Performative06, MAXXI L'Aquila" loading="lazy">
-        </div>
-        <p class="photo-credit">📷 Luca Eleuteri · courtesy Fondazione MAXXI</p>
-      </div>
-    </div>
-
-    <div class="event reveal">
-      <div class="event-flyer crop45">
-        <img src="dm8.jpg" data-full="dm8.jpg" alt="Andrea Riccio in DEVI MORIRE, Museo Nitsch, Napoli">
-      </div>
-      <div class="event-body">
-        <div class="rb-head"><span class="rb-year">12h · durational</span><h3 class="rb-title">Devi&nbsp;Morire</h3></div>
-        <p class="rb-sub" data-en="(Dissing Love) · two pianos with <b>Marino Formenti</b>">(Dissing Love) · due pianoforti con <b>Marino Formenti</b></p>
-        <p class="event-meta" data-en="Museo Nitsch — Fondazione Morra · Naples · 12-hour durational performance">Museo Nitsch — Fondazione Morra · Napoli · performance-durata 12 ore</p>
-        <p class="rb-desc" data-en="Two pianos, «nobody's music». At once a <i>battle</i> and a responsory: «DEVI MORIRE», <i>memento mori</i> — the most tender wish for nothingness. Space empties and fills; the spectator listens, un-exists, plays with them.">Due pianoforti, «le musiche di nessuno». Insieme <i>battle</i> e responsorio: «DEVI MORIRE», <i>memento mori</i> — il più tenerissimo augurio del nulla. Lo spazio si svuota e si riempie; lo spettatore ascolta, non-esiste, gioca con loro.</p>
-        <div class="gallery">
-          <img src="dm3.jpg" class="wide" data-full="dm3.jpg" alt="DEVI MORIRE — Museo Nitsch" loading="lazy">
-          <img src="dm4.jpg" data-full="dm4.jpg" alt="DEVI MORIRE — con Marino Formenti" loading="lazy">
-          <img src="dm9.jpg" data-full="dm9.jpg" alt="DEVI MORIRE — Museo Nitsch" loading="lazy">
-          <img src="dm7.jpg" data-full="dm7.jpg" alt="DEVI MORIRE — Marino Formenti" loading="lazy">
-          <img src="dm1.jpg" data-full="dm1.jpg" alt="DEVI MORIRE — Museo Nitsch" loading="lazy">
-          <img src="dm10.jpg" data-full="dm10.jpg" alt="DEVI MORIRE — Museo Nitsch" loading="lazy">
-          <img src="dm6.jpg" data-full="dm6.jpg" alt="DEVI MORIRE — partiture" loading="lazy">
-        </div>
-      </div>
-    </div>
-
-    <div class="event reveal">
-      <div class="event-flyer">
-        <img src="p6.jpg" data-full="p6.jpg" alt="Andrea Riccio in concerto a Isole Sonore, Università Bocconi, Milano">
-      </div>
-      <div class="event-body">
-        <div class="rb-head"><span class="rb-year">2025</span><h3 class="rb-title">Isole&nbsp;Sonore</h3></div>
-        <p class="rb-sub" data-en="Recital · artistic direction <b>Cesare Picco</b>">Recital · direzione artistica <b>Cesare Picco</b></p>
-        <p class="event-meta" data-en="Aula Magna, Bocconi University · Milan — 26 November 2025">Aula Magna, Università Bocconi · Milano — 26 novembre 2025</p>
-        <p class="rb-desc" data-en="A refined, <i>esoteric</i> recital on the spiritual dimensions of sound — Gurdjieff, Scelsi, Satie and Battiato, voices bound by Eastern thought and a transcendental approach to music. «In extemporaneous playing one abandons the Self and lets oneself be traversed by energies.»">Un recital raffinato ed <i>esoterico</i> sulle dimensioni spirituali del suono — Gurdjieff, Scelsi, Satie e Battiato, voci unite dal pensiero orientale e da un approccio trascendentale alla musica. «Nell'esecuzione estemporanea si abbandona il Sé e ci si lascia attraversare dalle energie.»</p>
-        <p class="program"><span class="plabel" data-en="Programme">Programma</span> G. I. Gurdjieff · Giacinto Scelsi · Erik Satie · Franco Battiato</p>
-        <div class="gallery">
-          <img src="p5.jpg" class="wide" data-full="p5.jpg" alt="Andrea Riccio — Isole Sonore, dettaglio" loading="lazy">
-          <img src="p1.jpg" data-full="p1.jpg" alt="Andrea Riccio — Isole Sonore" loading="lazy">
-          <img src="p2.jpg" data-full="p2.jpg" alt="Andrea Riccio — Isole Sonore" loading="lazy">
-          <img src="p3.jpg" data-full="p3.jpg" alt="Andrea Riccio — Isole Sonore" loading="lazy">
-          <img src="p4.jpg" data-full="p4.jpg" alt="Andrea Riccio — Isole Sonore" loading="lazy">
-        </div>
-        <div class="rb-links">
-          <a href="https://www.musicpaper.it/milano-isole-sonore-cesare-picco-pianoforte-esoterico-andrea-riccio/" target="_blank" rel="noopener">Musicpaper ↗</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="event reveal">
-      <div class="event-flyer poster">
-        <img src="rb_locandina.jpg" data-full="rb_locandina.jpg" alt="Locandina Resonant Bends — Nema Ensemble, Spazio Arena Avellino, 5 ottobre 2025">
-      </div>
-      <div class="event-body">
-        <div class="rb-head"><span class="rb-year">2025</span><h3 class="rb-title">Resonant&nbsp;Bends</h3></div>
-        <p class="rb-sub"><span class="nema-mark">Nema Ensemble</span> × mi·ɽài — Contemporary Speech</p>
-        <p class="event-meta" data-en="Spazio Arena · Avellino — 5 October 2025">Spazio Arena · Avellino — 5 ottobre 2025</p>
-        <p class="rb-desc" data-en="A concert on timbre as a <i>generative force of form</i>: from French spectral thought to roots in Debussy and Messiaen, form emerges from the inner transformation of sound — up to Debussy's <i>Nuages</i>. Real-time audio-reactive visuals improvised in TouchDesigner.">Un concerto sul timbro come <i>forza generativa della forma</i>: dal pensiero spettrale francese alle radici in Debussy e Messiaen, la forma emerge dalla trasformazione interna del suono — fino a <i>Nuages</i> di Debussy. Visual audio-reattivi improvvisati in TouchDesigner.</p>
-        <p class="program"><span class="plabel" data-en="Programme">Programma</span> Francesco De Simone · Claude Debussy · Tristan Murail · Rouzbeh Rafie · NEMA · Yan Maresz · Olivier Messiaen</p>
+        <div class="rb-head"><span class="rb-year">{% if e.etichetta %}{{ e.etichetta }}{% else %}{{ e.data | date: "%Y" }}{% endif %}</span><h3 class="rb-title">{{ e.titolo }}</h3></div>
+        {%- if e.sottotitolo_it %}
+        <p class="rb-sub"{% if e.sottotitolo_en %} data-en="{{ e.sottotitolo_en | escape }}"{% endif %}>{{ e.sottotitolo_it }}</p>
+        {%- endif -%}
+        {%- if meta_it != "" %}
+        <p class="event-meta"{% if meta_en != meta_it %} data-en="{{ meta_en | escape }}"{% endif %}>{{ meta_it }}</p>
+        {%- endif -%}
+        {%- if e.descrizione_it %}
+        <p class="rb-desc"{% if e.descrizione_en %} data-en="{{ e.descrizione_en | escape }}"{% endif %}>{{ e.descrizione_it }}</p>
+        {%- endif -%}
+        {%- if e.programma %}
+        <p class="program"><span class="plabel" data-en="Programme">Programma</span> {{ e.programma }}</p>
+        {%- endif -%}
+        {%- if e.crediti and e.crediti.size > 0 %}
         <ul class="rb-credits">
-          <li><span class="n">Vincenzo Gaudino</span><span class="r">Flauto</span></li>
-          <li><span class="n">Francesco Filisdeo</span><span class="r">Clarinetto</span></li>
-          <li><span class="n">Leonardo Ricci</span><span class="r">Violino</span></li>
-          <li><span class="n">Davide Maria Viola</span><span class="r">Violoncello</span></li>
-          <li class="hi"><span class="n">Andrea Riccio</span><span class="r">Pianoforte</span></li>
-          <li><span class="n">Francesco De Simone</span><span class="r">Elettronica</span></li>
-          <li><span class="n">Cosimo Abbate</span><span class="r">Direttore</span></li>
-          <li><span class="n">Simone Liguori · mi·ɽài</span><span class="r">Visual</span></li>
+          {%- for c in e.crediti %}
+          <li{% if c.evidenzia %} class="hi"{% endif %}><span class="n">{{ c.nome }}</span><span class="r">{{ c.ruolo }}</span></li>
+          {%- endfor %}
         </ul>
-        <div class="rb-links">
-          <a href="https://www.youtube.com/watch?v=6_2Ete1W8p8&amp;list=PLfsmYX1gM9Xe6KlpNEazfUuI70T0ItmxJ" target="_blank" rel="noopener">YouTube ↗</a>
-          <a href="https://eccerobot.xyz" target="_blank" rel="noopener">eccerobot.xyz ↗</a>
-          <a href="https://www.instagram.com/nemaensemble/" target="_blank" rel="noopener">@nemaensemble ↗</a>
+        {%- endif -%}
+        {%- if e.galleria and e.galleria.size > 0 %}
+        <div class="gallery">
+          {%- for g in e.galleria %}
+          <img src="{{ g.foto | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g.foto | relative_url }}" alt="{{ g.alt | default: e.titolo | strip_html | escape }}" loading="lazy">
+          {%- endfor %}
         </div>
+        {%- endif -%}
+        {%- if e.credito_foto %}
+        <p class="photo-credit">📷 {{ e.credito_foto }}</p>
+        {%- endif -%}
+        {%- if e.link and e.link.size > 0 %}
+        <div class="rb-links">
+          {%- for l in e.link %}
+          <a href="{{ l.url | escape }}" target="_blank" rel="noopener">{{ l.testo }} ↗</a>
+          {%- endfor %}
+        </div>
+        {%- endif %}
       </div>
     </div>
-
-    <div class="event reveal">
-      <div class="event-flyer">
-        <img src="piano.jpg" data-full="piano.jpg" alt="Andrea Riccio al pianoforte — Concerto Presagi, Certosa di Firenze">
-      </div>
-      <div class="event-body">
-        <div class="rb-head"><span class="rb-year">2025</span><h3 class="rb-title">Concerto&nbsp;Presagi</h3></div>
-        <p class="rb-sub" data-en="Solo recital · Associazione Filharmonie">Recital solo · Associazione Filharmonie</p>
-        <p class="event-meta" data-en="Cappella Santa Maria, Certosa di Firenze · Florence — 19 September 2025">Cappella Santa Maria, Certosa di Firenze · Firenze — 19 settembre 2025</p>
-        <p class="rb-desc" data-en="A recital from the classical to the contemporary, between spirituality and transcendence. The programme also features <i>three world premieres</i> by A. Maiello, R. Pinelli and E. Chisci.">Un recital dal classico al contemporaneo, tra spiritualità e trascendenza. In programma anche <i>tre prime esecuzioni assolute</i> di A. Maiello, R. Pinelli ed E. Chisci.</p>
-        <p class="program"><span class="plabel" data-en="Programme">Programma</span> John Adams · Erik Satie · William Duckworth · Giacinto Scelsi · Franco Battiato · Claude Debussy · Maiello · Pinelli · Chisci</p>
-        <div class="rb-links">
-          <a href="https://youtu.be/n3BwHO00VPI" target="_blank" rel="noopener">Video ↗</a>
-          <a href="https://www.lafilharmonie.com/event/concerto-presagi/" target="_blank" rel="noopener">lafilharmonie.com ↗</a>
-        </div>
-      </div>
-    </div>
+    {%- endfor %}
 
     </div><!-- /.events -->
   </section>
@@ -947,31 +910,16 @@
   <section id="video">
     <div class="sec-head reveal"><span class="idx">03</span><span>Video</span></div>
     <div class="videos">
-      <button type="button" class="vcard reveal" data-yt="pqI52Oec_YE" aria-label="Play — Resonant Bends · Claude Debussy">
-        <div class="thumb"><img src="yt_pqI52Oec_YE.jpg" alt="Resonant Bends · Claude Debussy, Les sons et les parfums" loading="lazy"></div>
+      {%- for v in site.data.video -%}
+      {%- assign yt = v.youtube | strip | split: "v=" | last | split: "&" | first | split: "youtu.be/" | last | split: "?" | first | split: "/" | last -%}
+      {%- if v.miniatura and v.miniatura != "" -%}{%- assign th = v.miniatura | relative_url -%}{%- else -%}{%- assign th = "https://i.ytimg.com/vi/" | append: yt | append: "/hqdefault.jpg" -%}{%- endif -%}
+      {%- assign tt = v.titolo | strip_html | escape %}
+      <button type="button" class="vcard reveal" data-yt="{{ yt }}" aria-label="Play — {{ tt }}">
+        <div class="thumb"><img src="{{ th }}" alt="{{ tt }}" loading="lazy"></div>
         <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">Resonant Bends · Claude Debussy — <i>Les sons et les parfums</i></span><span class="va">Nema Ensemble</span></span>
+        <span class="vmeta"><span class="vt">{{ v.titolo }}</span>{% if v.autore %}<span class="va">{{ v.autore }}</span>{% endif %}</span>
       </button>
-      <button type="button" class="vcard reveal" data-yt="tVY5TLQ3RE8" aria-label="Play — ReMozart, La notte delle dissonanze">
-        <div class="thumb"><img src="yt_tVY5TLQ3RE8.jpg" alt="ReMozart — Domenico Turi, La notte delle dissonanze" loading="lazy"></div>
-        <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">ReMozart · Domenico Turi — <i>La notte delle dissonanze</i></span><span class="va">Nema Ensemble</span></span>
-      </button>
-      <button type="button" class="vcard reveal" data-yt="X0zGwsX7vg4" aria-label="Play — Debussy, Étude n.11">
-        <div class="thumb"><img src="yt_X0zGwsX7vg4.jpg" alt="Claude Debussy — Étude n.11, Pour les arpèges composés" loading="lazy"></div>
-        <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">Claude Debussy — <i>Étude n.11, «Pour les arpèges composés»</i></span><span class="va">Andrea Riccio</span></span>
-      </button>
-      <button type="button" class="vcard reveal" data-yt="3LYHFxT-T84" aria-label="Play — Beethoven, Sonata op. 110">
-        <div class="thumb"><img src="yt_3LYHFxT-T84.jpg" alt="Ludwig van Beethoven — Sonata No. 31, op. 110" loading="lazy"></div>
-        <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">L. van Beethoven — <i>Sonata No. 31, op. 110</i></span><span class="va">Andrea Riccio</span></span>
-      </button>
-      <button type="button" class="vcard reveal" data-yt="zbeSQ6GJvOk" aria-label="Play — Battiato, Torneremo ancora">
-        <div class="thumb"><img src="yt_zbeSQ6GJvOk.jpg" alt="Franco Battiato — Torneremo ancora, Andrea Riccio pianoforte" loading="lazy"></div>
-        <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">Franco Battiato — <i>Torneremo ancora</i></span><span class="va">Andrea Riccio · pianoforte</span></span>
-      </button>
+      {%- endfor %}
     </div>
   </section>
 
@@ -997,6 +945,7 @@
       <span data-en="Composer · Pianist · Performer">Compositore · Pianista · Turnista</span>
     </div>
     <p class="footnote reveal" data-en="Draft — email &amp; booking to be added.">Bozza — email &amp; booking da inserire.</p>
+    <p class="sitecredit" data-en="Website developed by Simone Liguori · <a href=&quot;https://eccerobot.xyz&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>eccerobot.xyz ↗</a>">Sito sviluppato da Simone Liguori · <a href="https://eccerobot.xyz" target="_blank" rel="noopener">eccerobot.xyz ↗</a></p>
   </div>
 </footer>
 
