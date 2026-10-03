@@ -2,16 +2,18 @@
 {%- assign fs = site.data.fasce -%}
 {%- assign foto = include.k | append: "_foto" -%}{%- assign foto = fs[foto] -%}
 {%- assign dida = include.k | append: "_didascalia" -%}{%- assign dida = fs[dida] -%}
+{%- assign dida_en = include.k | append: "_didascalia_en" -%}{%- assign dida_en = fs[dida_en] -%}
 {%- assign intera = include.k | append: "_intera" -%}{%- assign intera = fs[intera] -%}
 {%- if foto and foto != "" -%}
 {%- assign cap = dida | remove: "<p>" | replace: "</p>", " " | strip -%}
-{%- assign cap = cap | replace: "<strong>", "<b>" | replace: "</strong>", "</b>" %}
+{%- assign cap = cap | replace: "<strong>", "<b>" | replace: "</strong>", "</b>" -%}
+{%- assign cap_en = dida_en | remove: "<p>" | replace: "</p>", " " | strip | replace: "<strong>", "<b>" | replace: "</strong>", "</b>" %}
   <div class="photoband reveal{% if intera %} pb-intera{% endif %}" data-full="{{ foto | relative_url }}" style="--img:url('{{ foto | relative_url }}')">
     <div class="pb-layer"></div>
     <div class="pb-ghost"></div>
     <div class="pb-vig"></div>
     {%- if cap != "" %}
-    <span class="pb-cap">{{ cap }}</span>
+    <span class="pb-cap"{% include en.html t=cap_en %}>{{ cap }}</span>
     {%- endif %}
   </div>
 {%- endif -%}

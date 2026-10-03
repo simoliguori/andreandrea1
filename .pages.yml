@@ -87,6 +87,10 @@ content:
             label: "Citazione"
             type: string
             description: "Con le virgolette, es. «un vero virtuoso»."
+          - name: testo_en
+            label: "Citazione (inglese)"
+            type: string
+            description: "Traduzione della citazione. Se vuota resta quella originale."
           - name: fonte
             label: "Fonte"
             type: string
@@ -194,9 +198,13 @@ content:
         type: string
         description: Facoltativo, compare nell'agenda dei Prossimi. Es. "h21".
       - name: etichetta
-        label: Etichetta accanto al titolo
+        label: Etichetta accanto al titolo (italiano)
         type: string
         description: Facoltativa. Se vuota viene mostrato l'anno (es. "2026").
+      - name: etichetta_en
+        label: Etichetta accanto al titolo (inglese)
+        type: string
+        description: Se vuota resta quella italiana.
       - name: sottotitolo_it
         label: Sottotitolo (italiano)
         type: rich-text
@@ -262,9 +270,17 @@ content:
           media: false
           switcher: false
       - name: programma
-        label: Programma
+        label: Programma (italiano)
         type: rich-text
         description: Gli autori in programma, separati da " · ". Es. "Claude Debussy · John Cage · Philip Glass".
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: programma_en
+        label: Programma (inglese)
+        description: "Solo se c'è qualcosa da tradurre, es. (prime assolute) → (world premieres). Se vuoto resta quello italiano."
+        type: rich-text
         options:
           format: html
           media: false
@@ -348,9 +364,13 @@ content:
             - name: basso
               label: In basso (es. mani sul pianoforte)
       - name: credito_foto
-        label: Crediti fotografici
+        label: Crediti fotografici (italiano)
         type: string
-        description: Compare sotto la galleria con 📷. Es. "Luca Eleuteri · courtesy Fondazione MAXXI".
+        description: Compare sotto la galleria con 📷. Es. "Luca Eleuteri · per gentile concessione della Fondazione MAXXI".
+      - name: credito_foto_en
+        label: Crediti fotografici (inglese)
+        type: string
+        description: Es. "Luca Eleuteri · courtesy Fondazione MAXXI". Se vuoto resta quello italiano.
       # — Musicisti, link, allegati —
       - name: crediti
         label: Musicisti e crediti (nome · ruolo — "Evidenzia" lo mette in risalto)
@@ -364,7 +384,10 @@ content:
             label: Nome
             type: string
           - name: ruolo
-            label: Ruolo
+            label: Ruolo (italiano)
+            type: string
+          - name: ruolo_en
+            label: Ruolo (inglese)
             type: string
           - name: evidenzia
             label: Evidenzia
@@ -507,9 +530,13 @@ content:
           media: false
           switcher: false
       - name: autore
-        label: Autore / interpreti
+        label: Autore / interpreti (italiano)
         type: string
         description: La riga piccola sotto al titolo. Es. "Nema Ensemble".
+      - name: autore_en
+        label: Autore / interpreti (inglese)
+        type: string
+        description: Solo se cambia, es. "Andrea Riccio · piano". Se vuoto resta quello italiano.
       - name: youtube
         label: Link YouTube
         type: string
@@ -546,6 +573,14 @@ content:
           format: html
           media: false
           switcher: false
+      - name: dopo_info_didascalia_en
+        label: 'Fascia dopo "Info" — didascalia (inglese)'
+        type: rich-text
+        description: "Se vuota resta quella italiana."
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: dopo_live_foto
         label: 'Fascia dopo "Live" — foto'
         type: image
@@ -562,6 +597,14 @@ content:
           format: html
           media: false
           switcher: false
+      - name: dopo_live_didascalia_en
+        label: 'Fascia dopo "Live" — didascalia (inglese)'
+        type: rich-text
+        description: "Se vuota resta quella italiana."
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: dopo_video_foto
         label: 'Fascia dopo "Video" — foto'
         type: image
@@ -574,6 +617,14 @@ content:
         label: 'Fascia dopo "Video" — didascalia'
         type: rich-text
         description: "Il testo piccolo in basso a sinistra."
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: dopo_video_didascalia_en
+        label: 'Fascia dopo "Video" — didascalia (inglese)'
+        type: rich-text
+        description: "Se vuota resta quella italiana."
         options:
           format: html
           media: false

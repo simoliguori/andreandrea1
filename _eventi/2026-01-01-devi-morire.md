@@ -1,7 +1,8 @@
 ---
 titolo: Devi Morire
 giorno: '2026-01-01'
-etichetta: 12h · durational
+etichetta: 12h · durata
+etichetta_en: 12h · durational
 sottotitolo_it: (Dissing Love) · due pianoforti con <b>Marino Formenti</b>
 sottotitolo_en: (Dissing Love) · two pianos with <b>Marino Formenti</b>
 sede: Museo Nitsch — Fondazione Morra

@@ -10,10 +10,13 @@ paragrafi:
   testo_en: Pianist and <strong>artistic director</strong> of the <strong>NEMA Ensemble</strong> — winner of the International Ensemble Modern Academy call in Frankfurt. His latest album, <em>Artic_Akt</em> (Konsequenz, 2024), is «a disorienting and beautiful record» (Il Manifesto).
 citazioni:
 - testo: «un vero virtuoso»
+  testo_en: «a true virtuoso»
   fonte: La Repubblica
 - testo: «tocco di straordinaria originalità»
+  testo_en: «a touch of extraordinary originality»
   fonte: Live Performing & Arts
 - testo: «un disco spiazzante e bellissimo»
+  testo_en: «a disorienting and beautiful record»
   fonte: Il Manifesto
 stampa_titolo_it: Rassegna stampa
 stampa_titolo_en: Press

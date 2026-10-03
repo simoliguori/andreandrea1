@@ -22,21 +22,29 @@ fuoco_galleria: auto
 crediti:
 - nome: Vincenzo Gaudino
   ruolo: Flauto
+  ruolo_en: Flute
 - nome: Francesco Filisdeo
   ruolo: Clarinetto
+  ruolo_en: Clarinet
 - nome: Leonardo Ricci
   ruolo: Violino
+  ruolo_en: Violin
 - nome: Davide Maria Viola
   ruolo: Violoncello
+  ruolo_en: Cello
 - nome: Andrea Riccio
   ruolo: Pianoforte
+  ruolo_en: Piano
   evidenzia: true
 - nome: Francesco De Simone
   ruolo: Elettronica
+  ruolo_en: Electronics
 - nome: Cosimo Abbate
   ruolo: Direttore
+  ruolo_en: Conductor
 - nome: Simone Liguori · mi·rài
   ruolo: Visual
+  ruolo_en: Visuals
 link:
 - testo: YouTube
   url: https://www.youtube.com/watch?v=6_2Ete1W8p8&list=PLfsmYX1gM9Xe6KlpNEazfUuI70T0ItmxJ

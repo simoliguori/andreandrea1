@@ -543,17 +543,19 @@ layout: null
   @media (max-width:760px){.nema{grid-template-columns:1fr;gap:32px}}
 
   /* ===== event (Resonant Bends) layout ===== */
-  .event{display:grid;grid-template-columns:minmax(220px,330px) 1fr;gap:clamp(28px,4vw,58px);align-items:start}
-  .event-flyer{position:relative;overflow:hidden;background:var(--ash);border:1px solid var(--edge-soft);align-self:start}
+  /* card evento: immagine flottante in alto a sinistra, testo e foto le scorrono attorno */
+  .event{display:flow-root}
+  .event-flyer{position:relative;overflow:hidden;background:var(--ash);border:1px solid var(--edge-soft);
+    float:left;width:clamp(220px,26vw,330px);margin:6px clamp(28px,4vw,58px) 22px 0}
   .event-flyer img{display:block;width:100%;height:auto;filter:grayscale(1) contrast(1.05) brightness(.96);transition:filter .6s ease,transform .7s cubic-bezier(.16,1,.3,1)}
-  .event-flyer.poster{align-self:center}
   .event-flyer:hover img{filter:grayscale(0) contrast(1) brightness(1);transform:scale(1.02)}
-  .event-body{display:flex;flex-direction:column;gap:16px}
+  .event-body{display:block}
+  .event .event-body>*+*{margin-top:16px}
+  .event .event-body>*{margin-bottom:0}
   .event-meta{font-family:var(--f-mono);font-size:13px;letter-spacing:.05em;color:var(--bone);margin:0}
   .program{font-family:var(--f-mono);font-size:12px;color:var(--smoke);margin:2px 0;line-height:1.85}
   .program .plabel{display:block;color:var(--iron);text-transform:uppercase;letter-spacing:.16em;font-size:10px;margin-bottom:5px}
-  @media (max-width:720px){.event{grid-template-columns:1fr}.event-flyer{max-width:340px}}
-  .event.noflyer{grid-template-columns:1fr}
+  @media (max-width:720px){.event-flyer{float:none;width:100%;max-width:340px;margin:0 0 24px}}
   .events{display:flex;flex-direction:column;gap:clamp(52px,9vh,104px)}
   .event-flyer.crop45 img{aspect-ratio:4/5;object-fit:cover;object-position:34% 42%}
 
@@ -817,7 +819,7 @@ layout: null
     {%- if info.citazioni.size > 0 %}
     <div class="pullquotes reveal">
       {%- for q in info.citazioni %}
-      <blockquote><p>{{ q.testo | escape }}</p><cite>{{ q.fonte | escape }}</cite></blockquote>
+      <blockquote><p{% include en.html t=q.testo_en %}>{{ q.testo | escape }}</p><cite>{{ q.fonte | escape }}</cite></blockquote>
       {%- endfor %}
     </div>
     {%- endif -%}
@@ -865,6 +867,7 @@ layout: null
       {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
       {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
       {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- assign prog_en = e.programma_en | remove: "<p>" | replace: "</p>", " " | strip -%}
       {%- capture luogo_it -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta | escape }}{%- endcapture -%}
       {%- capture luogo_en -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta_en | default: e.citta | escape }}{%- endcapture -%}
       {%- capture data_en -%}{% include data.html d=e.giorno f=e.giorno_fine lang="en" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}{%- endcapture %}
@@ -879,10 +882,11 @@ layout: null
           <div class="ag-meta"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it }}</div>
           {%- endif -%}
           {%- if prog != "" %}
-          <div class="ag-prog">{{ prog }}</div>
+          <div class="ag-prog"{% include en.html t=prog_en %}>{{ prog }}</div>
           {%- endif -%}
           {%- if e.link_biglietti %}
-          <a class="ag-cta" href="{{ e.link_biglietti | escape }}" target="_blank" rel="noopener"{% include en.html t=e.testo_biglietti_en %}>{{ e.testo_biglietti_it | default: "Biglietti · Info" | escape }} ↗</a>
+          {%- capture cta_en -%}{{ e.testo_biglietti_en | default: "Tickets · Info" | escape }} ↗{%- endcapture %}
+          <a class="ag-cta" href="{{ e.link_biglietti | escape }}" target="_blank" rel="noopener" data-en="{{ cta_en | escape }}">{{ e.testo_biglietti_it | default: "Biglietti · Info" | escape }} ↗</a>
           {%- endif %}
         </div>
       </li>
@@ -903,6 +907,7 @@ layout: null
     {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
     {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
     {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
+    {%- assign prog_en = e.programma_en | remove: "<p>" | replace: "</p>", " " | strip -%}
     {%- capture luogo_it -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta | escape }}{%- endcapture -%}
     {%- capture luogo_en -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta_en | default: e.citta | escape }}{%- endcapture -%}
     {%- capture meta_it -%}{{ luogo_it }}{% unless e.mostra_data == false %}{% if luogo_it != "" %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="it" %}{% endunless %}{%- endcapture -%}
@@ -919,7 +924,7 @@ layout: null
       </div>
       {%- endif %}
       <div class="event-body">
-        <div class="rb-head"><span class="rb-year">{% if e.etichetta %}{{ e.etichetta }}{% else %}{{ e.giorno | date: "%Y" }}{% endif %}</span><h3 class="rb-title">{{ e.titolo }}</h3></div>
+        <div class="rb-head"><span class="rb-year"{% if e.etichetta %}{% include en.html t=e.etichetta_en %}{% endif %}>{% if e.etichetta %}{{ e.etichetta }}{% else %}{{ e.giorno | date: "%Y" }}{% endif %}</span><h3 class="rb-title">{{ e.titolo }}</h3></div>
         {%- if sub_it != "" %}
         <p class="rb-sub"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it | replace: "Nema Ensemble", '<span class="nema-mark">Nema Ensemble</span>' }}</p>
         {%- endif -%}
@@ -930,12 +935,12 @@ layout: null
         <div class="rb-desc"{% if e.descrizione_en %} data-en="{{ e.descrizione_en | escape }}"{% endif %}>{{ e.descrizione_it }}</div>
         {%- endif -%}
         {%- if prog != "" %}
-        <p class="program"><span class="plabel" data-en="Programme">Programma</span> {{ prog }}</p>
+        <p class="program"><span class="plabel" data-en="Programme">Programma</span> <span{% include en.html t=prog_en %}>{{ prog }}</span></p>
         {%- endif -%}
         {%- if e.crediti and e.crediti.size > 0 %}
         <ul class="rb-credits">
           {%- for c in e.crediti %}
-          <li{% if c.evidenzia %} class="hi"{% endif %}><span class="n">{{ c.nome }}</span><span class="r">{{ c.ruolo }}</span></li>
+          <li{% if c.evidenzia %} class="hi"{% endif %}><span class="n">{{ c.nome }}</span><span class="r"{% include en.html t=c.ruolo_en %}>{{ c.ruolo }}</span></li>
           {%- endfor %}
         </ul>
         {%- endif -%}
@@ -952,7 +957,8 @@ layout: null
         </div>
         {%- endif -%}
         {%- if e.credito_foto %}
-        <p class="photo-credit">📷 {{ e.credito_foto }}</p>
+        {%- capture cred_en -%}{% if e.credito_foto_en %}📷 {{ e.credito_foto_en }}{% endif %}{%- endcapture %}
+        <p class="photo-credit"{% include en.html t=cred_en %}>📷 {{ e.credito_foto }}</p>
         {%- endif -%}
         {%- if e.link.size > 0 or e.allegati.size > 0 %}
         <div class="rb-links">
@@ -1028,7 +1034,7 @@ layout: null
       <button type="button" class="vcard reveal" data-yt="{{ yt }}" aria-label="Play — {{ tt }}">
         <div class="thumb"><img src="{{ th }}" alt="{{ tt }}" loading="lazy"></div>
         <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">{{ vt }}</span>{% if v.autore %}<span class="va">{{ v.autore }}</span>{% endif %}</span>
+        <span class="vmeta"><span class="vt">{{ vt }}</span>{% if v.autore %}<span class="va"{% include en.html t=v.autore_en %}>{{ v.autore }}</span>{% endif %}</span>
       </button>
       {%- endfor %}
     </div>
