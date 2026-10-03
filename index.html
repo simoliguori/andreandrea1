@@ -547,7 +547,16 @@ layout: null
   @media (max-width:760px){.nema{grid-template-columns:1fr;gap:32px}}
 
   /* ===== card evento: layout immagine + testo ===== */
-  .event{display:grid;grid-template-columns:minmax(220px,330px) 1fr;gap:clamp(28px,4vw,58px);align-items:start}
+  .event{display:grid;grid-template-columns:minmax(220px,330px) 1fr;grid-template-areas:"flyer body" "board board";
+    column-gap:clamp(28px,4vw,58px);row-gap:clamp(26px,4vh,40px);align-items:start}
+  .event-flyer{grid-area:flyer}
+  .event-body{grid-area:body}
+  /* moodboard: partecipanti e foto a tutta larghezza sotto immagine e testo */
+  .event-board{grid-area:board;display:flex;flex-direction:column;gap:18px;min-width:0}
+  .moodboard{columns:4 200px;column-gap:8px}
+  .moodboard img{display:block;width:100%;height:auto;margin:0 0 8px;break-inside:avoid;cursor:zoom-in;
+    filter:grayscale(1) contrast(1.05) brightness(.9);transition:filter .55s ease,transform .55s cubic-bezier(.16,1,.3,1)}
+  .moodboard img:hover{filter:grayscale(0) brightness(1);transform:scale(1.015)}
   .event-flyer{position:relative;overflow:hidden;background:var(--ash);border:1px solid var(--edge-soft);align-self:start}
   .event-flyer img{display:block;width:100%;height:auto;filter:grayscale(1) contrast(1.05) brightness(.96);transition:filter .6s ease,transform .7s cubic-bezier(.16,1,.3,1)}
   .event-flyer:hover img{filter:grayscale(0) contrast(1) brightness(1);transform:scale(1.02)}
@@ -555,8 +564,8 @@ layout: null
   .event-meta{font-family:var(--f-mono);font-size:13px;letter-spacing:.05em;color:var(--bone);margin:0}
   .program{font-family:var(--f-mono);font-size:12px;color:var(--smoke);margin:2px 0;line-height:1.85}
   .program .plabel{display:block;color:var(--iron);text-transform:uppercase;letter-spacing:.16em;font-size:10px;margin-bottom:5px}
-  @media (max-width:720px){.event{grid-template-columns:1fr}.event-flyer{max-width:340px}}
-  .event.noflyer{grid-template-columns:1fr}
+  @media (max-width:720px){.event{grid-template-columns:1fr;grid-template-areas:"flyer" "body" "board"}.event-flyer{max-width:340px}.moodboard{columns:2}}
+  .event.noflyer{grid-template-columns:1fr;grid-template-areas:"body" "board"}
   .events{display:flex;flex-direction:column;gap:clamp(52px,9vh,104px)}
   .event-flyer.crop45 img{aspect-ratio:4/5;object-fit:cover;object-position:34% 42%}
 
@@ -938,29 +947,6 @@ layout: null
         {%- if prog != "" %}
         <p class="program"><span class="plabel" data-en="Programme">Programma</span> <span{% include en.html t=prog_en %}>{{ prog }}</span></p>
         {%- endif -%}
-        {%- if e.crediti and e.crediti.size > 0 %}
-        <ul class="rb-credits">
-          {%- for c in e.crediti %}
-          <li{% if c.evidenzia %} class="hi"{% endif %}><span class="n">{{ c.nome }}</span><span class="r"{% include en.html t=c.ruolo_en %}>{{ c.ruolo }}</span></li>
-          {%- endfor %}
-        </ul>
-        {%- endif -%}
-        {%- if e.galleria and e.galleria.size > 0 %}
-        {%- assign oriz = false -%}{%- if e.formato_galleria == "orizzontali" -%}{%- assign oriz = true -%}{%- endif -%}
-        {%- assign ncol = e.galleria.size | minus: 1 -%}
-        {%- if oriz -%}{%- assign maxc = 3 -%}{%- else -%}{%- assign maxc = 4 -%}{%- endif -%}
-        {%- if ncol > maxc -%}{%- assign ncol = maxc -%}{%- endif -%}{%- if ncol < 1 -%}{%- assign ncol = 1 -%}{%- endif %}
-        <div class="gallery{% if oriz %} oriz{% endif %}"{% if oriz %} style="--cols:{{ ncol }}"{% endif %}>
-          {%- for g in e.galleria %}
-          {%- if forloop.first -%}{%- assign fp = fl -%}{%- else -%}{%- assign fp = fg -%}{%- endif %}
-          <img src="{{ g | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g | relative_url }}"{% if fp != "" %} style="object-position:{{ fp }}"{% endif %} alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">
-          {%- endfor %}
-        </div>
-        {%- endif -%}
-        {%- if e.credito_foto %}
-        {%- capture cred_en -%}{% if e.credito_foto_en %}📷 {{ e.credito_foto_en }}{% endif %}{%- endcapture %}
-        <p class="photo-credit"{% include en.html t=cred_en %}>📷 {{ e.credito_foto }}</p>
-        {%- endif -%}
         {%- if e.link.size > 0 or e.allegati.size > 0 %}
         <div class="rb-links">
           {%- for l in e.link %}
@@ -972,6 +958,28 @@ layout: null
         </div>
         {%- endif %}
       </div>
+      {%- if e.crediti.size > 0 or e.galleria.size > 0 or e.credito_foto %}
+      <div class="event-board">
+        {%- if e.crediti and e.crediti.size > 0 %}
+        <ul class="rb-credits">
+          {%- for c in e.crediti %}
+          <li{% if c.evidenzia %} class="hi"{% endif %}><span class="n">{{ c.nome }}</span><span class="r"{% include en.html t=c.ruolo_en %}>{{ c.ruolo }}</span></li>
+          {%- endfor %}
+        </ul>
+        {%- endif -%}
+        {%- if e.galleria and e.galleria.size > 0 %}
+        <div class="moodboard">
+          {%- for g in e.galleria %}
+          <img src="{{ g | relative_url }}" data-full="{{ g | relative_url }}" alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">
+          {%- endfor %}
+        </div>
+        {%- endif -%}
+        {%- if e.credito_foto %}
+        {%- capture cred_en -%}{% if e.credito_foto_en %}📷 {{ e.credito_foto_en }}{% endif %}{%- endcapture %}
+        <p class="photo-credit"{% include en.html t=cred_en %}>📷 {{ e.credito_foto }}</p>
+        {%- endif %}
+      </div>
+      {%- endif %}
     </div>
     {%- endfor %}
 

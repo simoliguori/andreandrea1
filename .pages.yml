@@ -319,49 +319,9 @@ content:
       - name: galleria
         label: Galleria foto
         type: image
-        description: Puoi caricarne più di una insieme. La prima viene mostrata larga, le altre in griglia.
+        description: "Puoi caricarne più di una insieme. Sul sito diventano una moodboard sotto la card: ogni foto si vede intera, nelle sue proporzioni."
         options:
           multiple: true
-      - name: formato_galleria
-        label: "Galleria — formato delle foto"
-        type: select
-        default: verticali
-        description: "Verticali per ritratti e foto di scena in piedi; orizzontali per foto larghe (proiezioni, palco intero, video)."
-        options:
-          values:
-            - name: verticali
-              label: Verticali (3:4)
-            - name: orizzontali
-              label: Orizzontali (16:9)
-      - name: fuoco_foto_larga
-        label: "Galleria — punto focale della prima foto (larga)"
-        description: "La prima foto è molto larga e bassa: scegli cosa non deve essere tagliato."
-        type: select
-        default: auto
-        options:
-          values:
-            - name: auto
-              label: Automatico
-            - name: alto
-              label: In alto (es. volti, teste)
-            - name: centro
-              label: Al centro
-            - name: basso
-              label: In basso (es. mani sul pianoforte)
-      - name: fuoco_galleria
-        label: "Galleria — punto focale delle altre foto"
-        type: select
-        default: auto
-        options:
-          values:
-            - name: auto
-              label: Automatico
-            - name: alto
-              label: In alto (es. volti, teste)
-            - name: centro
-              label: Al centro
-            - name: basso
-              label: In basso (es. mani sul pianoforte)
       - name: credito_foto
         label: Crediti fotografici (italiano)
         type: string
