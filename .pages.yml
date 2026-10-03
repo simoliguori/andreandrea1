@@ -40,7 +40,8 @@ content:
       - name: giorno_fine
         label: Data di fine
         type: date
-        description: Facoltativa, solo per eventi di più giorni (es. 11–13 settembre).
+        description: Facoltativa, solo per eventi di più giorni (es. 11–13 settembre). Lasciala vuota per eventi di un giorno.
+        default: ""
         options:
           format: yyyy-MM-dd
       - name: ora
@@ -134,9 +135,8 @@ content:
         description: Compare sotto la galleria con 📷. Es. "Luca Eleuteri · courtesy Fondazione MAXXI".
       # — Musicisti, link, allegati —
       - name: crediti
-        label: Musicisti e crediti
+        label: Musicisti e crediti (nome · ruolo — "Evidenzia" lo mette in risalto)
         type: object
-        description: Elenco nome / ruolo (es. "Andrea Riccio — Pianoforte"). "Evidenzia" lo mette in risalto.
         list:
           collapsible:
             collapsed: true
@@ -151,10 +151,10 @@ content:
           - name: evidenzia
             label: Evidenzia
             type: boolean
+            default: false
       - name: link
-        label: Link
+        label: Link esterni (articoli, video, sito dell'evento)
         type: object
-        description: Link esterni sotto la card (articoli, video, sito dell'evento).
         list:
           collapsible:
             collapsed: true
@@ -169,9 +169,8 @@ content:
             type: string
             required: true
       - name: allegati
-        label: Allegati (PDF)
+        label: Allegati da scaricare (programma di sala, locandina, cartella stampa…)
         type: object
-        description: Programma di sala, locandina, cartella stampa… Compaiono come link scaricabili sotto la card.
         list:
           collapsible:
             collapsed: true
