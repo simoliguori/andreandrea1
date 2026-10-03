@@ -33,8 +33,9 @@ jobs:
         run: |
           if [ -d _site/uploads ]; then
             sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick > /dev/null
-            sudo find _site/uploads -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
-              -exec mogrify -auto-orient -resize '2400x2400>' -quality 82 -strip {} +
+            # solo le foto pesanti (oltre 600 KB): quelle già leggere restano intatte
+            sudo find _site/uploads -type f -size +600k \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
+              -exec mogrify -auto-orient -resize '2400x2400>' -quality 86 {} +
           fi
       - uses: actions/upload-pages-artifact@v3
 
