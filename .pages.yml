@@ -672,7 +672,7 @@ content:
       - name: firma_it
         label: "Firma (italiano)"
         type: string
-        description: "Es. Compositore · Pianista · Performer"
+        description: "Facoltativa: la riga in fondo a destra. Lasciala vuota per nasconderla."
       - name: firma_en
         label: "Firma (inglese)"
         type: string

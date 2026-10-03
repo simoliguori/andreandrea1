@@ -1057,7 +1057,9 @@ layout: null
         <a href="{{ l.url | escape }}" target="_blank" rel="noopener">{{ l.testo | escape }}</a>
         {%- endfor %}
       </div>
+      {%- if ct.firma_it and ct.firma_it != "" %}
       <span{% include en.html t=ct.firma_en %}>{{ ct.firma_it | escape }}</span>
+      {%- endif %}
     </div>
     {%- if ct.nota_it and ct.nota_it != "" %}
     <p class="footnote reveal"{% include en.html t=ct.nota_en %}>{{ ct.nota_it | escape }}</p>
