@@ -469,9 +469,6 @@ content:
           format: html
           media: false
           switcher: false
-      - name: dopo_info_grassetto_rosso
-        label: 'Fascia dopo "Info" — grassetto in rosso Nema'
-        type: boolean
       - name: dopo_live_foto
         label: 'Fascia dopo "Live" — foto'
         type: image
@@ -484,9 +481,6 @@ content:
           format: html
           media: false
           switcher: false
-      - name: dopo_live_grassetto_rosso
-        label: 'Fascia dopo "Live" — grassetto in rosso Nema'
-        type: boolean
       - name: dopo_video_foto
         label: 'Fascia dopo "Video" — foto'
         type: image
@@ -499,9 +493,6 @@ content:
           format: html
           media: false
           switcher: false
-      - name: dopo_video_grassetto_rosso
-        label: 'Fascia dopo "Video" — grassetto in rosso Nema'
-        type: boolean
 
   - name: contatti
     label: "04 · Contatti"
