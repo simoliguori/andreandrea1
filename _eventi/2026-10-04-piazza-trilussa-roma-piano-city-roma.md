@@ -1,10 +1,11 @@
 ---
-titolo: Piazza Trilussa, Roma · Piano City Roma
+titolo: Piano City Roma
 giorno: '2026-10-04'
 ora: h17
-mostra_data: true
 sottotitolo_it: Programma in via di definizione
 sottotitolo_en: Programme to be announced
-luogo_it: Piazza Trilussa · Roma
-luogo_en: Piazza Trilussa · Rome
+sede: Piazza Trilussa
+citta: Roma
+citta_en: Rome
+mostra_data: true
 ---

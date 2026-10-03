@@ -161,10 +161,10 @@ content:
       template: "{giorno}-{titolo}.md"
       field: false
     view:
-      fields: [titolo, giorno, luogo_it]
+      fields: [titolo, giorno, sede]
       primary: titolo
       sort: [giorno, titolo]
-      search: [titolo, luogo_it]
+      search: [titolo, sede, citta]
       default:
         sort: giorno
         order: desc
@@ -213,19 +213,37 @@ content:
           format: html
           media: false
           switcher: false
-      - name: luogo_it
-        label: Luogo (italiano)
+      # — Luogo —
+      - name: sede
+        label: "Luogo — sede"
         type: string
-        description: Es. "Aula Magna, Università Bocconi · Milano". La data viene aggiunta in automatico dopo il luogo.
-      - name: luogo_en
-        label: Luogo (inglese)
+        description: "Il nome del posto, es. Teatro San Carlo, Spazio Arena, MAXXI. Non serve ripeterlo nel titolo."
+      - name: citta
+        label: "Luogo — città (italiano)"
         type: string
-        description: Se vuoto viene usato quello italiano.
+        description: "Es. Napoli. Sul sito diventa Sede · Città, seguito dalla data."
+      - name: citta_en
+        label: "Luogo — città (inglese)"
+        type: string
+        description: "Solo se cambia in inglese, es. Naples, Rome, Florence. Se vuota resta quella italiana."
       - name: mostra_data
         label: Mostra la data dopo il luogo
         type: boolean
         default: true
         description: Togli la spunta per eventi senza una data precisa da mostrare.
+      # — Biglietti (solo per le date future) —
+      - name: link_biglietti
+        label: "Biglietti / info — link"
+        type: string
+        description: "Se lo inserisci, la data nei Prossimi diventa cliccabile e porta qui. Quando l'evento è passato il pulsante sparisce da solo."
+      - name: testo_biglietti_it
+        label: "Biglietti / info — testo del pulsante (italiano)"
+        type: string
+        description: "Facoltativo. Se vuoto: Biglietti · Info."
+      - name: testo_biglietti_en
+        label: "Biglietti / info — testo del pulsante (inglese)"
+        type: string
+        description: "Facoltativo. Se vuoto: Tickets · Info."
       # — Testo —
       - name: descrizione_it
         label: Descrizione (italiano)
@@ -268,12 +286,56 @@ content:
               label: Ritagliata verticale 4:5
             - name: locandina
               label: Locandina (centrata)
+      - name: fuoco_copertina
+        label: "Copertina — punto focale"
+        description: "Quale parte della foto tenere quando viene ritagliata."
+        type: select
+        default: auto
+        options:
+          values:
+            - name: auto
+              label: Automatico
+            - name: alto
+              label: In alto (es. volti, teste)
+            - name: centro
+              label: Al centro
+            - name: basso
+              label: In basso (es. mani sul pianoforte)
       - name: galleria
         label: Galleria foto
         type: image
         description: Puoi caricarne più di una insieme. La prima viene mostrata larga, le altre in griglia.
         options:
           multiple: true
+      - name: fuoco_foto_larga
+        label: "Galleria — punto focale della prima foto (larga)"
+        description: "La prima foto è molto larga e bassa: scegli cosa non deve essere tagliato."
+        type: select
+        default: auto
+        options:
+          values:
+            - name: auto
+              label: Automatico
+            - name: alto
+              label: In alto (es. volti, teste)
+            - name: centro
+              label: Al centro
+            - name: basso
+              label: In basso (es. mani sul pianoforte)
+      - name: fuoco_galleria
+        label: "Galleria — punto focale delle altre foto"
+        type: select
+        default: auto
+        options:
+          values:
+            - name: auto
+              label: Automatico
+            - name: alto
+              label: In alto (es. volti, teste)
+            - name: centro
+              label: Al centro
+            - name: basso
+              label: In basso (es. mani sul pianoforte)
       - name: credito_foto
         label: Crediti fotografici
         type: string

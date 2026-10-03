@@ -5,6 +5,8 @@ layout: null
 <meta charset="utf-8">
 <title>{{ imp.titolo_pagina | default: "Andrea Riccio" | escape }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="{{ '/assets/favicon.png' | relative_url }}" id="favicon">
+<link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
 {%- if imp.descrizione %}
 <meta name="description" content="{{ imp.descrizione | escape }}">
 <meta property="og:description" content="{{ imp.descrizione | escape }}">
@@ -557,6 +559,15 @@ layout: null
   .ag-meta{font-family:var(--f-mono);font-size:12px;color:var(--smoke);margin-top:9px}
   .ag-meta i,.ag-prog i{font-style:italic;color:var(--iron)}
   .ag-prog{font-family:var(--f-mono);font-size:11px;color:var(--iron);margin-top:9px;line-height:1.75}
+  .ag-place{font-family:var(--f-mono);font-size:12px;color:var(--bone);letter-spacing:.04em;margin-top:9px}
+  .ag-cta{display:inline-block;margin-top:14px;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--glow);border-bottom:1px solid var(--edge);padding-bottom:3px;transition:border-color .3s}
+  .ag-cta::after{content:"";position:absolute;inset:0}
+  .ag-has-link{cursor:pointer}
+  .ag-has-link:hover .ag-cta{border-color:var(--glow)}
+  .ag-has-link:hover .ag-title{color:var(--glow)}
+  .ag-title{transition:color .3s}
+  [hidden]{display:none !important}
   @media (max-width:640px){.agenda li{grid-template-columns:1fr;gap:8px}}
 
   /* photo gallery inside an event */
@@ -813,63 +824,83 @@ layout: null
     <div class="sec-head reveal"><span class="idx">01</span>{%- assign live = site.data.live -%}<span{% include en.html t=live.titolo_sezione_en %}>{{ live.titolo_sezione_it | escape }}</span></div>
 
     <h4 class="live-sub reveal"{% include en.html t=live.prossimi_en %}>{{ live.prossimi_it | escape }}</h4>
-    {%- comment -%} Divide gli eventi: data (o data fine) da oggi in poi → Prossimi, altrimenti → Passati {%- endcomment -%}
+    {%- comment -%}
+      Ogni evento compare sia nell'agenda (Prossimi) sia tra i Passati.
+      Quale delle due versioni si vede lo decide la data di fine (o di inizio):
+      al momento della pubblicazione (attributo hidden) e poi nel browser del visitatore
+      con lo script qui sotto, così l'evento passa da solo nei Passati il giorno dopo.
+    {%- endcomment -%}
     {%- assign oggi = site.time | date: "%Y-%m-%d" -%}
-    {%- assign prossimi = "" | split: "" -%}
-    {%- assign passati = "" | split: "" -%}
+    {%- assign chiavi = "" | split: "" -%}
     {%- for e in site.eventi -%}
       {%- if e.giorno == nil or e.giorno == "" -%}{%- continue -%}{%- endif -%}
-      {%- assign inizio = e.giorno | date: "%Y-%m-%d" -%}
-      {%- assign fine = inizio -%}
-      {%- if e.giorno_fine and e.giorno_fine != "" -%}{%- assign fine = e.giorno_fine | date: "%Y-%m-%d" -%}{%- endif -%}
-      {%- assign chiave = inizio | append: " " | append: e.ora | append: "|" | append: forloop.index0 -%}
-      {%- if fine >= oggi -%}{%- assign prossimi = prossimi | push: chiave -%}{%- else -%}{%- assign passati = passati | push: chiave -%}{%- endif -%}
+      {%- assign chiave = e.giorno | date: "%Y-%m-%d" | append: " " | append: e.ora | append: "|" | append: forloop.index0 -%}
+      {%- assign chiavi = chiavi | push: chiave -%}
     {%- endfor -%}
-    {%- assign prossimi = prossimi | sort -%}
-    {%- assign passati = passati | sort | reverse %}
+    {%- assign crescenti = chiavi | sort -%}
+    {%- assign decrescenti = crescenti | reverse -%}
+    {%- assign futuri = 0 %}
     <ul class="agenda reveal">
-      {%- for k in prossimi -%}
+      {%- for k in crescenti -%}
       {%- assign i = k | split: "|" | last | plus: 0 -%}
       {%- assign e = site.eventi[i] -%}
+      {%- assign fine = e.giorno | date: "%Y-%m-%d" -%}
+      {%- if e.giorno_fine and e.giorno_fine != "" -%}{%- assign fine = e.giorno_fine | date: "%Y-%m-%d" -%}{%- endif -%}
+      {%- if fine >= oggi -%}{%- assign futuri = futuri | plus: 1 -%}{%- endif -%}
       {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
       {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
       {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- capture luogo_it -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta | escape }}{%- endcapture -%}
+      {%- capture luogo_en -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta_en | default: e.citta | escape }}{%- endcapture -%}
       {%- capture data_en -%}{% include data.html d=e.giorno f=e.giorno_fine lang="en" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}{%- endcapture %}
-      <li>
+      <li class="ag-item{% if e.link_biglietti %} ag-has-link{% endif %}" data-fine="{{ fine }}"{% if fine < oggi %} hidden{% endif %}>
         <span class="ag-date" data-en="{{ data_en | escape }}">{% include data.html d=e.giorno f=e.giorno_fine lang="it" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}</span>
         <div class="ag-body">
           <div class="ag-title">{{ e.titolo }}</div>
+          {%- if luogo_it != "" %}
+          <div class="ag-place"{% if luogo_en != luogo_it %} data-en="{{ luogo_en | escape }}"{% endif %}>{{ luogo_it }}</div>
+          {%- endif -%}
           {%- if sub_it != "" %}
           <div class="ag-meta"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it }}</div>
           {%- endif -%}
           {%- if prog != "" %}
           <div class="ag-prog">{{ prog }}</div>
+          {%- endif -%}
+          {%- if e.link_biglietti %}
+          <a class="ag-cta" href="{{ e.link_biglietti | escape }}" target="_blank" rel="noopener"{% include en.html t=e.testo_biglietti_en %}>{{ e.testo_biglietti_it | default: "Biglietti · Info" | escape }} ↗</a>
           {%- endif %}
         </div>
       </li>
-      {%- else %}
-      <li>
+      {%- endfor %}
+      <li class="ag-empty"{% if futuri > 0 %} hidden{% endif %}>
         <span class="ag-date"></span>
         <div class="ag-body"><div class="ag-meta"{% include en.html t=live.nessuna_data_en %}>{{ live.nessuna_data_it | escape }}</div></div>
       </li>
-      {%- endfor %}
     </ul>
 
     <h4 class="live-sub reveal"{% include en.html t=live.passati_en %}>{{ live.passati_it | escape }}</h4>
     <div class="events">
-    {%- for k in passati -%}
+    {%- for k in decrescenti -%}
     {%- assign i = k | split: "|" | last | plus: 0 -%}
     {%- assign e = site.eventi[i] -%}
-      {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
-      {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
-      {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
-    {%- capture meta_it -%}{{ e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_it %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="it" %}{% endunless %}{%- endcapture -%}
-    {%- capture meta_en -%}{{ e.luogo_en | default: e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_en or e.luogo_it %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="en" %}{% endunless %}{%- endcapture %}
+    {%- assign fine = e.giorno | date: "%Y-%m-%d" -%}
+    {%- if e.giorno_fine and e.giorno_fine != "" -%}{%- assign fine = e.giorno_fine | date: "%Y-%m-%d" -%}{%- endif -%}
+    {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
+    {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
+    {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
+    {%- capture luogo_it -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta | escape }}{%- endcapture -%}
+    {%- capture luogo_en -%}{{ e.sede | escape }}{% if e.sede and e.citta %} · {% endif %}{{ e.citta_en | default: e.citta | escape }}{%- endcapture -%}
+    {%- capture meta_it -%}{{ luogo_it }}{% unless e.mostra_data == false %}{% if luogo_it != "" %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="it" %}{% endunless %}{%- endcapture -%}
+    {%- capture meta_en -%}{{ luogo_en }}{% unless e.mostra_data == false %}{% if luogo_en != "" %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="en" %}{% endunless %}{%- endcapture -%}
+    {%- assign fc = "" -%}{%- assign fl = "" -%}{%- assign fg = "" -%}
+    {%- case e.fuoco_copertina -%}{%- when "alto" -%}{%- assign fc = "50% 12%" -%}{%- when "centro" -%}{%- assign fc = "50% 50%" -%}{%- when "basso" -%}{%- assign fc = "50% 88%" -%}{%- endcase -%}
+    {%- case e.fuoco_foto_larga -%}{%- when "alto" -%}{%- assign fl = "50% 12%" -%}{%- when "centro" -%}{%- assign fl = "50% 50%" -%}{%- when "basso" -%}{%- assign fl = "50% 88%" -%}{%- endcase -%}
+    {%- case e.fuoco_galleria -%}{%- when "alto" -%}{%- assign fg = "50% 12%" -%}{%- when "centro" -%}{%- assign fg = "50% 50%" -%}{%- when "basso" -%}{%- assign fg = "50% 88%" -%}{%- endcase %}
 
-    <div class="event reveal{% unless e.copertina %} noflyer{% endunless %}">
+    <div class="event reveal{% unless e.copertina %} noflyer{% endunless %}" data-fine="{{ fine }}"{% if fine >= oggi %} hidden{% endif %}>
       {%- if e.copertina %}
       <div class="event-flyer{% if e.formato_copertina == 'ritaglio' %} crop45{% elsif e.formato_copertina == 'locandina' %} poster{% endif %}">
-        <img src="{{ e.copertina | relative_url }}" data-full="{{ e.copertina | relative_url }}" alt="{{ e.titolo | strip_html | escape }}{% if e.luogo_it %} — {{ e.luogo_it | strip_html | escape }}{% endif %}">
+        <img src="{{ e.copertina | relative_url }}" data-full="{{ e.copertina | relative_url }}"{% if fc != "" %} style="object-position:{{ fc }}"{% endif %} alt="{{ e.titolo | strip_html | escape }}{% if luogo_it != "" %} — {{ luogo_it }}{% endif %}">
       </div>
       {%- endif %}
       <div class="event-body">
@@ -896,7 +927,8 @@ layout: null
         {%- if e.galleria and e.galleria.size > 0 %}
         <div class="gallery">
           {%- for g in e.galleria %}
-          <img src="{{ g | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g | relative_url }}" alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">
+          {%- if forloop.first -%}{%- assign fp = fl -%}{%- else -%}{%- assign fp = fg -%}{%- endif %}
+          <img src="{{ g | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g | relative_url }}"{% if fp != "" %} style="object-position:{{ fp }}"{% endif %} alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">
           {%- endfor %}
         </div>
         {%- endif -%}
@@ -918,6 +950,18 @@ layout: null
     {%- endfor %}
 
     </div><!-- /.events -->
+    <script>
+      // Prossimi / Passati in base alla data di oggi di chi visita (non serve ripubblicare il sito)
+      (function(){
+        var d=new Date(), oggi=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2), futuri=0;
+        document.querySelectorAll('#live [data-fine]').forEach(function(el){
+          var futuro=el.getAttribute('data-fine')>=oggi, inAgenda=el.classList.contains('ag-item');
+          el.hidden=inAgenda?!futuro:futuro;
+          if(inAgenda&&futuro) futuri++;
+        });
+        var vuoto=document.querySelector('#live .ag-empty'); if(vuoto) vuoto.hidden=futuri>0;
+      })();
+    </script>
   </section>
 
   <!-- photo band — Nema Ensemble live (Resonant Bends) -->
@@ -1071,6 +1115,21 @@ layout: null
         card.querySelector('.thumb').appendChild(f);
       });
     });
+  })();
+
+  // ===== favicon: breve glitch ogni tanto, come il nome nell'intestazione =====
+  (function(){
+    var ico=document.getElementById('favicon');
+    if(!ico || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var base=ico.href, f1=base.replace('favicon.png','favicon-glitch1.png'), f2=base.replace('favicon.png','favicon-glitch2.png');
+    [f1,f2].forEach(function(u){ var i=new Image(); i.src=u; });
+    function glitch(){
+      ico.href=f1;
+      setTimeout(function(){ ico.href=f2; },110);
+      setTimeout(function(){ ico.href=base; },220);
+      setTimeout(glitch,3500+Math.random()*4500);
+    }
+    setTimeout(glitch,2500);
   })();
 
   // ===== language switch (IT/EN) with blur swap + replay of on-screen reveals =====
