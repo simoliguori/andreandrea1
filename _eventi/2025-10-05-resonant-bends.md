@@ -12,7 +12,6 @@ copertina: /uploads/locandina-resonant-bends.jpg
 formato_copertina: normale
 fuoco_copertina: auto
 galleria:
-- /uploads/rb_nema2.jpg
 - /uploads/resonant-bends-visual-1.jpg
 - /uploads/resonant-bends-visual-2.jpg
 - /uploads/resonant-bends-visual-3.jpg
