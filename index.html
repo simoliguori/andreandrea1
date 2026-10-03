@@ -516,7 +516,7 @@ layout: null
   .photoband .pb-cap b{color:var(--bone);font-weight:400}
   .photoband .pb-cap .nema-mark{font-weight:700}
 
-  /* ===== Resonant Bends — progetto in evidenza ===== */
+  /* ===== card evento: testi, partecipanti, link (classi rb-: valgono per tutti gli eventi) ===== */
   .rb{margin-top:clamp(48px,8vh,88px);border-top:1px solid var(--edge);padding-top:clamp(30px,5vh,52px);
     display:flex;flex-direction:column;gap:22px}
   .rb-head{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
@@ -542,7 +542,7 @@ layout: null
   .rb-links a:hover::after{width:100%}
   @media (max-width:760px){.nema{grid-template-columns:1fr;gap:32px}}
 
-  /* ===== event (Resonant Bends) layout ===== */
+  /* ===== card evento: layout immagine + testo ===== */
   .event{display:grid;grid-template-columns:minmax(220px,330px) 1fr;gap:clamp(28px,4vw,58px);align-items:start}
   .event-flyer{position:relative;overflow:hidden;background:var(--ash);border:1px solid var(--edge-soft);align-self:start}
   .event-flyer img{display:block;width:100%;height:auto;filter:grayscale(1) contrast(1.05) brightness(.96);transition:filter .6s ease,transform .7s cubic-bezier(.16,1,.3,1)}

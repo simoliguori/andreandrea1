@@ -294,14 +294,13 @@ content:
         label: Formato della copertina
         type: select
         default: normale
+        description: "Intera per locandine e foto da mostrare senza tagli; ritagliata per avere una copertina verticale uniforme."
         options:
           values:
             - name: normale
-              label: Normale (proporzioni originali)
+              label: Intera (foto o locandina, senza ritaglio)
             - name: ritaglio
               label: Ritagliata verticale 4:5
-            - name: locandina
-              label: Locandina (centrata)
       - name: fuoco_copertina
         label: "Copertina — punto focale"
         description: "Quale parte della foto tenere quando viene ritagliata."
@@ -373,7 +372,7 @@ content:
         description: Es. "Luca Eleuteri · courtesy Fondazione MAXXI". Se vuoto resta quello italiano.
       # — Musicisti, link, allegati —
       - name: crediti
-        label: Musicisti e crediti (nome · ruolo — "Evidenzia" lo mette in risalto)
+        label: Partecipanti e ruoli (facoltativo — se compilato la card mostra l'elenco, come in Resonant Bends)
         type: object
         list:
           collapsible:
