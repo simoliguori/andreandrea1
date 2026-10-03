@@ -1,0 +1,8 @@
+# Copertina (prima schermata) — si modifica dal pannello Pages CMS.
+nome: Andrea Riccio
+righe:
+- testo_it: Pianista
+  testo_en: Pianist
+- testo_it: Performer
+  testo_en: ''
+foto: /uploads/hero.jpg

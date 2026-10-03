@@ -1,0 +1,26 @@
+# Sezione 00 · Info — si modifica dal pannello Pages CMS.
+titolo_sezione_it: Info
+titolo_sezione_en: ''
+paragrafi:
+- testo_it: <strong>Andrea Riccio</strong> è pianista e performer, tra le voci più radicali del giovane pianismo italiano. Ospite regolare di Teatro San Carlo di Napoli, Ravello Festival, Festival dei Due Mondi di Spoleto, Mozarteum di Salisburgo e Accademia Filarmonica Romana.
+  testo_en: <strong>Andrea Riccio</strong> is a pianist and performer, among the most radical voices of the young Italian piano scene. A regular guest of Teatro San Carlo in Naples, the Ravello Festival, the Festival dei Due Mondi in Spoleto, the Mozarteum in Salzburg and the Accademia Filarmonica Romana.
+- testo_it: La sua ricerca spazia dal recital innovativo al Living Theatre, dal Fluxus alle performance-durata di molte ore. Ha collaborato con <strong>Marino Formenti</strong> (<em>DEVI MORIRE</em>, Fondazione Morra-Nitsch) e con compositori come Sciarrino, Michael Jarrell, Giorgio Colombo Taccani, Dario Buccino, Rouzbeh Rafie.
+  testo_en: His practice ranges from the innovative recital to Living Theatre, from Fluxus to durational performances lasting many hours. He has collaborated with <strong>Marino Formenti</strong> (<em>DEVI MORIRE</em>, Fondazione Morra-Nitsch) and with composers such as Sciarrino, Michael Jarrell, Giorgio Colombo Taccani, Dario Buccino, Rouzbeh Rafie.
+- testo_it: Pianista e <strong>direttore artistico</strong> del <strong>NEMA Ensemble</strong> — vincitore del bando dell'International Ensemble Modern Academy di Francoforte. Il suo ultimo album, <em>Artic_Akt</em> (Konsequenz, 2024), è «un disco spiazzante e bellissimo» (Il Manifesto).
+  testo_en: Pianist and <strong>artistic director</strong> of the <strong>NEMA Ensemble</strong> — winner of the International Ensemble Modern Academy call in Frankfurt. His latest album, <em>Artic_Akt</em> (Konsequenz, 2024), is «a disorienting and beautiful record» (Il Manifesto).
+citazioni:
+- testo: «un vero virtuoso»
+  fonte: La Repubblica
+- testo: «tocco di straordinaria originalità»
+  fonte: Live Performing & Arts
+- testo: «un disco spiazzante e bellissimo»
+  fonte: Il Manifesto
+stampa_titolo_it: Rassegna stampa
+stampa_titolo_en: Press
+stampa:
+- testo: Musicpaper · Isole Sonore
+  url: https://www.musicpaper.it/milano-isole-sonore-cesare-picco-pianoforte-esoterico-andrea-riccio/
+galleria:
+- /uploads/p8.jpg
+- /uploads/p7.jpg
+- /uploads/p10.jpg

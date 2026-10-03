@@ -7,8 +7,156 @@ media:
   rename: safe
 
 content:
+  - name: copertina
+    label: Copertina
+    type: file
+    path: _data/copertina.yml
+    format: yaml
+    fields:
+      - name: nome
+        label: "Nome"
+        type: string
+        description: "Il nome grande in apertura (con l'effetto glitch)."
+      - name: righe
+        label: Righe sotto al nome
+        description: "Fino a 4 righe (es. Pianista, Performer). Le barre /// vengono aggiunte in automatico."
+        type: object
+        list:
+          max: 4
+          collapsible:
+            collapsed: false
+            summary: "{testo_it}"
+        fields:
+          - name: testo_it
+            label: "Testo (italiano)"
+            type: string
+          - name: testo_en
+            label: "Testo (inglese)"
+            type: string
+            description: "Se vuoto resta quello italiano."
+      - name: foto
+        label: Foto di sfondo
+        type: image
+        description: "Il ritratto in bianco e nero dietro al nome."
+
+  - name: info
+    label: "00 · Info"
+    type: file
+    path: _data/info.yml
+    format: yaml
+    fields:
+      - name: titolo_sezione_it
+        label: "Titolo della sezione (italiano)"
+        type: string
+        description: "Il titolino della sezione, accanto al numero."
+      - name: titolo_sezione_en
+        label: "Titolo della sezione (inglese)"
+        type: string
+        description: "Se vuoto resta quello italiano."
+      - name: paragrafi
+        label: "Biografia — paragrafi"
+        description: "Il primo paragrafo viene mostrato grande, gli altri più piccoli sotto."
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "Paragrafo {index}"
+        fields:
+          - name: testo_it
+            label: "Testo (italiano)"
+            type: rich-text
+            options:
+              format: html
+              media: false
+              switcher: false
+          - name: testo_en
+            label: "Testo (inglese)"
+            type: rich-text
+            description: "Se vuoto resta quello italiano."
+            options:
+              format: html
+              media: false
+              switcher: false
+      - name: citazioni
+        label: Citazioni dalla stampa
+        description: "Le frasi grandi in corsivo (fino a 3 stanno su una riga)."
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{testo} — {fonte}"
+        fields:
+          - name: testo
+            label: "Citazione"
+            type: string
+            description: "Con le virgolette, es. «un vero virtuoso»."
+          - name: fonte
+            label: "Fonte"
+            type: string
+            description: "Es. La Repubblica"
+      - name: stampa_titolo_it
+        label: "Rassegna stampa — etichetta (italiano)"
+        type: string
+      - name: stampa_titolo_en
+        label: "Rassegna stampa — etichetta (inglese)"
+        type: string
+      - name: stampa
+        label: "Rassegna stampa — link"
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{testo}"
+        fields:
+          - name: testo
+            label: "Testo del link"
+            type: string
+            description: "Es. Musicpaper · Isole Sonore"
+          - name: url
+            label: "Indirizzo (URL)"
+            type: string
+      - name: galleria
+        label: Foto sotto la biografia
+        type: image
+        description: "Consigliate 3 o 4 foto verticali."
+        options:
+          multiple: true
+
+  - name: live
+    label: "01 · Live — titoli"
+    type: file
+    path: _data/live.yml
+    format: yaml
+    fields:
+      - name: titolo_sezione_it
+        label: "Titolo della sezione (italiano)"
+        type: string
+        description: "Il titolino della sezione, accanto al numero."
+      - name: titolo_sezione_en
+        label: "Titolo della sezione (inglese)"
+        type: string
+        description: "Se vuoto resta quello italiano."
+      - name: prossimi_it
+        label: "Etichetta \"Prossimi\" (italiano)"
+        type: string
+      - name: prossimi_en
+        label: "Etichetta \"Prossimi\" (inglese)"
+        type: string
+      - name: nessuna_data_it
+        label: "Testo quando non ci sono date (italiano)"
+        type: string
+      - name: nessuna_data_en
+        label: "Testo quando non ci sono date (inglese)"
+        type: string
+      - name: passati_it
+        label: "Etichetta \"Passati\" (italiano)"
+        type: string
+      - name: passati_en
+        label: "Etichetta \"Passati\" (inglese)"
+        type: string
+
   - name: eventi
-    label: Eventi
+    label: "01 · Live — eventi"
     type: collection
     path: _eventi
     format: yaml-frontmatter
@@ -186,8 +334,85 @@ content:
             required: true
             description: Es. "Programma di sala".
 
+  - name: nema
+    label: "02 · Nema Ensemble"
+    type: file
+    path: _data/nema.yml
+    format: yaml
+    fields:
+      - name: titolo_sezione_it
+        label: "Titolo della sezione (italiano)"
+        type: string
+        description: "Il titolino della sezione, accanto al numero."
+      - name: titolo_sezione_en
+        label: "Titolo della sezione (inglese)"
+        type: string
+        description: "Se vuoto resta quello italiano."
+      - name: titolo
+        label: "Titolo grande"
+        type: rich-text
+        description: "La parte in grassetto diventa rossa (colore Nema)."
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: frase_it
+        label: "Frase grande (italiano)"
+        type: rich-text
+        description: "Il corsivo viene mostrato in grigio."
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: frase_en
+        label: "Frase grande (inglese)"
+        type: rich-text
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: logo
+        label: Logo
+        type: image
+      - name: testo_it
+        label: "Testo (italiano)"
+        type: rich-text
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: testo_en
+        label: "Testo (inglese)"
+        type: rich-text
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: link_testo
+        label: "Link — testo"
+        type: string
+        description: "Es. Instagram · @nemaensemble"
+      - name: link_url
+        label: "Link — indirizzo (URL)"
+        type: string
+
+  - name: video_testi
+    label: "03 · Video — titolo"
+    type: file
+    path: _data/video_testi.yml
+    format: yaml
+    fields:
+      - name: titolo_sezione_it
+        label: "Titolo della sezione (italiano)"
+        type: string
+        description: "Il titolino della sezione, accanto al numero."
+      - name: titolo_sezione_en
+        label: "Titolo della sezione (inglese)"
+        type: string
+        description: "Se vuoto resta quello italiano."
+
   - name: video
-    label: Video
+    label: "03 · Video — elenco"
     type: collection
     path: _video
     format: yaml-frontmatter
@@ -228,3 +453,144 @@ content:
         label: Miniatura
         type: image
         description: Facoltativa. Se vuota viene usata quella di YouTube.
+
+  - name: fasce
+    label: Fasce fotografiche
+    type: file
+    path: _data/fasce.yml
+    format: yaml
+    fields:
+      - name: dopo_info
+        label: "Fascia dopo \"Info\""
+        type: object
+        fields:
+          - name: foto
+            label: Foto
+            type: image
+            description: "La foto a tutta larghezza. Se vuota la fascia non viene mostrata."
+          - name: didascalia
+            label: "Didascalia"
+            type: rich-text
+            description: "Il testo piccolo in basso a sinistra."
+            options:
+              format: html
+              media: false
+              switcher: false
+          - name: grassetto_rosso
+            label: Grassetto in rosso Nema
+            type: boolean
+            description: "Il testo in grassetto della didascalia diventa rosso (per progetti Nema)."
+      - name: dopo_live
+        label: "Fascia dopo \"Live\""
+        type: object
+        fields:
+          - name: foto
+            label: Foto
+            type: image
+            description: "La foto a tutta larghezza. Se vuota la fascia non viene mostrata."
+          - name: didascalia
+            label: "Didascalia"
+            type: rich-text
+            description: "Il testo piccolo in basso a sinistra."
+            options:
+              format: html
+              media: false
+              switcher: false
+          - name: grassetto_rosso
+            label: Grassetto in rosso Nema
+            type: boolean
+            description: "Il testo in grassetto della didascalia diventa rosso (per progetti Nema)."
+      - name: dopo_video
+        label: "Fascia dopo \"Video\""
+        type: object
+        fields:
+          - name: foto
+            label: Foto
+            type: image
+            description: "La foto a tutta larghezza. Se vuota la fascia non viene mostrata."
+          - name: didascalia
+            label: "Didascalia"
+            type: rich-text
+            description: "Il testo piccolo in basso a sinistra."
+            options:
+              format: html
+              media: false
+              switcher: false
+          - name: grassetto_rosso
+            label: Grassetto in rosso Nema
+            type: boolean
+            description: "Il testo in grassetto della didascalia diventa rosso (per progetti Nema)."
+
+  - name: contatti
+    label: "04 · Contatti"
+    type: file
+    path: _data/contatti.yml
+    format: yaml
+    fields:
+      - name: titolo_sezione_it
+        label: "Titolo della sezione (italiano)"
+        type: string
+        description: "Il titolino della sezione, accanto al numero."
+      - name: titolo_sezione_en
+        label: "Titolo della sezione (inglese)"
+        type: string
+        description: "Se vuoto resta quello italiano."
+      - name: contatto_testo
+        label: "Contatto grande — testo"
+        type: string
+        description: "Es. @mastro.don.riccio oppure un indirizzo email."
+      - name: contatto_url
+        label: "Contatto grande — link"
+        type: string
+        description: "Un indirizzo web, oppure un'email (es. nome@dominio.it): diventa un link per scrivere."
+      - name: link
+        label: Link in fondo
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{testo}"
+        fields:
+          - name: testo
+            label: "Testo"
+            type: string
+          - name: url
+            label: "Indirizzo (URL)"
+            type: string
+      - name: firma_it
+        label: "Firma (italiano)"
+        type: string
+        description: "Es. Compositore · Pianista · Performer"
+      - name: firma_en
+        label: "Firma (inglese)"
+        type: string
+      - name: copyright
+        label: "Copyright"
+        type: string
+        description: "Es. © 2026 Andrea Riccio"
+      - name: nota_it
+        label: "Nota finale (italiano)"
+        type: string
+        description: "La riga piccola in fondo. Lasciala vuota per nasconderla."
+      - name: nota_en
+        label: "Nota finale (inglese)"
+        type: string
+
+  - name: impostazioni
+    label: Impostazioni
+    type: file
+    path: _data/impostazioni.yml
+    format: yaml
+    fields:
+      - name: titolo_pagina
+        label: "Titolo della pagina"
+        type: string
+        description: "Il nome nella scheda del browser e nei risultati di Google."
+      - name: descrizione
+        label: "Descrizione per Google e social"
+        type: text
+        description: "Una o due frasi."
+      - name: immagine_social
+        label: Immagine di anteprima
+        type: image
+        description: "L'immagine mostrata quando il sito viene condiviso (WhatsApp, Instagram, Facebook…)."

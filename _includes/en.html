@@ -1,0 +1,2 @@
+{%- comment -%} Aggiunge data-en="..." solo se il testo inglese è compilato. Parametro: t {%- endcomment -%}
+{%- if include.t and include.t != "" %} data-en="{{ include.t | escape }}"{% endif -%}

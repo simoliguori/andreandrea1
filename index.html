@@ -1,9 +1,19 @@
 ---
 layout: null
 ---
+{%- assign imp = site.data.impostazioni -%}
 <meta charset="utf-8">
-<title>Andrea Riccio</title>
+<title>{{ imp.titolo_pagina | default: "Andrea Riccio" | escape }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{%- if imp.descrizione %}
+<meta name="description" content="{{ imp.descrizione | escape }}">
+<meta property="og:description" content="{{ imp.descrizione | escape }}">
+{%- endif %}
+<meta property="og:title" content="{{ imp.titolo_pagina | default: "Andrea Riccio" | escape }}">
+<meta property="og:type" content="website">
+{%- if imp.immagine_social %}
+<meta property="og:image" content="{{ imp.immagine_social | absolute_url }}">
+{%- endif %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500&family=Jost:wght@200;300;400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
@@ -473,7 +483,7 @@ layout: null
   .nema-title{font-family:var(--f-display);font-weight:500;font-size:clamp(46px,11vw,150px);line-height:.9;letter-spacing:-.02em;margin:0 0 clamp(30px,5vh,58px);color:var(--glow);text-wrap:balance}
   .nema-title .nema-mark{font-weight:700}
   .nema .big{font-family:var(--f-display);font-weight:400;font-size:clamp(22px,3.4vw,40px);line-height:1.15;color:var(--glow);text-wrap:balance}
-  .nema .big i{font-style:italic;color:var(--smoke)}
+  .nema .big i,.nema .big em{font-style:italic;color:var(--smoke)}
   .nema-logo{display:block;width:clamp(130px,20vw,210px);height:auto;margin:0 0 26px;filter:drop-shadow(0 8px 30px rgba(0,0,0,.5))}
   .nema p{color:var(--smoke);max-width:52ch;margin:0 0 18px}
   .nema .tag{display:inline-block;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--iron);border:1px solid var(--edge);padding:8px 14px;border-radius:100px}
@@ -718,7 +728,8 @@ layout: null
   </div>
 </nav>
 
-<header class="hero" id="top">
+{%- assign cop = site.data.copertina %}
+<header class="hero" id="top"{% if cop.foto %} style="--portrait:url('{{ cop.foto | relative_url }}')"{% endif %}>
   <div class="portrait-wrap" aria-hidden="true">
     <div class="portrait">
       <div class="layer p-base"></div>
@@ -739,9 +750,14 @@ layout: null
 
   <div class="hero-inner">
     <h1 class="titleblock">
-      <div class="tb-line l1"><span class="txt glitch" data-text="Andrea&nbsp;Riccio">Andrea&nbsp;Riccio</span><span class="slash">///</span></div>
-      <div class="tb-line l3"><span class="slash">//</span><span class="txt" data-en="Pianist">Pianista</span></div>
-      <div class="tb-line l4"><span class="txt">Performer</span><span class="slash">////</span></div>
+      {%- assign nome = cop.nome | default: "Andrea Riccio" | escape | replace: " ", "&nbsp;" %}
+      <div class="tb-line l1"><span class="txt glitch" data-text="{{ nome }}">{{ nome }}</span><span class="slash">///</span></div>
+      {%- assign classi = "l3,l4,l2,l5" | split: "," -%}
+      {%- assign barre = "//,////,///,/////" | split: "," -%}
+      {%- for r in cop.righe limit: 4 -%}
+      {%- assign i = forloop.index0 -%}{%- assign lato = i | modulo: 2 %}
+      <div class="tb-line {{ classi[i] }}">{% if lato == 0 %}<span class="slash">{{ barre[i] }}</span>{% endif %}<span class="txt"{% include en.html t=r.testo_en %}>{{ r.testo_it | escape }}</span>{% if lato == 1 %}<span class="slash">{{ barre[i] }}</span>{% endif %}</div>
+      {%- endfor %}
     </h1>
   </div>
 
@@ -754,41 +770,49 @@ layout: null
 <main>
   <!-- 00 — STATEMENT -->
   <section id="intro">
-    <div class="sec-head reveal"><span class="idx">00</span><span>Info</span></div>
+    {%- assign info = site.data.info %}
+    <div class="sec-head reveal"><span class="idx">00</span><span{% include en.html t=info.titolo_sezione_en %}>{{ info.titolo_sezione_it | escape }}</span></div>
     <div class="statement-meta reveal statement-lead">
-      <p data-en="<strong>Andrea Riccio</strong> is a pianist and performer, among the most radical voices of the young Italian piano scene. A regular guest of Teatro San Carlo in Naples, the Ravello Festival, the Festival dei Due Mondi in Spoleto, the Mozarteum in Salzburg and the Accademia Filarmonica Romana."><strong>Andrea Riccio</strong> è pianista e performer, tra le voci più radicali del giovane pianismo italiano. Ospite regolare di Teatro San Carlo di Napoli, Ravello Festival, Festival dei Due Mondi di Spoleto, Mozarteum di Salisburgo e Accademia Filarmonica Romana.</p>
-      <p data-en="His practice ranges from the innovative recital to Living Theatre, from Fluxus to durational performances lasting many hours. He has collaborated with <strong>Marino Formenti</strong> (<em>DEVI MORIRE</em>, Fondazione Morra-Nitsch) and with composers such as Sciarrino, Michael Jarrell, Giorgio Colombo Taccani, Dario Buccino, Rouzbeh Rafie.">La sua ricerca spazia dal recital innovativo al Living Theatre, dal Fluxus alle performance-durata di molte ore. Ha collaborato con <strong>Marino Formenti</strong> (<em>DEVI MORIRE</em>, Fondazione Morra-Nitsch) e con compositori come Sciarrino, Michael Jarrell, Giorgio Colombo Taccani, Dario Buccino, Rouzbeh Rafie.</p>
-      <p data-en="Pianist and <strong>artistic director</strong> of the <strong>NEMA Ensemble</strong> — winner of the International Ensemble Modern Academy call in Frankfurt. His latest album, <em>Artic_Akt</em> (Konsequenz, 2024), is «a disorienting and beautiful record» (Il Manifesto).">Pianista e <strong>direttore artistico</strong> del <strong>NEMA Ensemble</strong> — vincitore del bando dell'International Ensemble Modern Academy di Francoforte. Il suo ultimo album, <em>Artic_Akt</em> (Konsequenz, 2024), è «un disco spiazzante e bellissimo» (Il Manifesto).</p>
+      {%- for par in info.paragrafi -%}
+      {%- assign t_it = par.testo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- assign t_en = par.testo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- if t_it != "" %}
+      <p{% include en.html t=t_en %}>{{ t_it }}</p>
+      {%- endif -%}
+      {%- endfor %}
     </div>
+    {%- if info.citazioni.size > 0 %}
     <div class="pullquotes reveal">
-      <blockquote><p>«un vero virtuoso»</p><cite>La Repubblica</cite></blockquote>
-      <blockquote><p>«tocco di straordinaria originalità»</p><cite>Live Performing &amp; Arts</cite></blockquote>
-      <blockquote><p>«un disco spiazzante e bellissimo»</p><cite>Il Manifesto</cite></blockquote>
+      {%- for q in info.citazioni %}
+      <blockquote><p>{{ q.testo | escape }}</p><cite>{{ q.fonte | escape }}</cite></blockquote>
+      {%- endfor %}
     </div>
+    {%- endif -%}
+    {%- if info.stampa.size > 0 %}
     <div class="rb-links reveal" style="margin-top:24px">
-      <span class="plabel" style="margin-right:4px" data-en="Press">Rassegna stampa</span>
-      <a href="https://www.musicpaper.it/milano-isole-sonore-cesare-picco-pianoforte-esoterico-andrea-riccio/" target="_blank" rel="noopener">Musicpaper · Isole Sonore ↗</a>
+      <span class="plabel" style="margin-right:4px"{% include en.html t=info.stampa_titolo_en %}>{{ info.stampa_titolo_it | escape }}</span>
+      {%- for l in info.stampa %}
+      <a href="{{ l.url | escape }}" target="_blank" rel="noopener">{{ l.testo | escape }} ↗</a>
+      {%- endfor %}
     </div>
+    {%- endif -%}
+    {%- if info.galleria.size > 0 %}
     <div class="gallery reveal" style="margin-top:clamp(40px,6vh,72px)">
-      <img src="p8.jpg" data-full="p8.jpg" alt="Andrea Riccio — ritratto" loading="lazy">
-      <img src="p7.jpg" data-full="p7.jpg" alt="Andrea Riccio — ritratto" loading="lazy">
-      <img src="p10.jpg" data-full="p10.jpg" alt="Andrea Riccio — ritratto" loading="lazy">
+      {%- for g in info.galleria %}
+      <img src="{{ g | relative_url }}" data-full="{{ g | relative_url }}" alt="{{ cop.nome | escape }} — foto {{ forloop.index }}" loading="lazy">
+      {%- endfor %}
     </div>
+    {%- endif %}
   </section>
 
   <!-- photo band — motion blur -->
-  <div class="photoband reveal" data-full="p9.jpg" style="--img:url('p9.jpg')">
-    <div class="pb-layer"></div>
-    <div class="pb-ghost"></div>
-    <div class="pb-vig"></div>
-    <span class="pb-cap"><b>Andrea Riccio</b> · Performer</span>
-  </div>
+  {%- include fascia.html f=site.data.fasce.dopo_info %}
 
   <!-- 01 — LIVE / EVENTO -->
   <section id="live">
-    <div class="sec-head reveal"><span class="idx">01</span><span data-en="Live · Events">Live · Eventi</span></div>
+    <div class="sec-head reveal"><span class="idx">01</span>{%- assign live = site.data.live -%}<span{% include en.html t=live.titolo_sezione_en %}>{{ live.titolo_sezione_it | escape }}</span></div>
 
-    <h4 class="live-sub reveal" data-en="Upcoming">Prossimi</h4>
+    <h4 class="live-sub reveal"{% include en.html t=live.prossimi_en %}>{{ live.prossimi_it | escape }}</h4>
     {%- comment -%} Divide gli eventi: data (o data fine) da oggi in poi → Prossimi, altrimenti → Passati {%- endcomment -%}
     {%- assign oggi = site.time | date: "%Y-%m-%d" -%}
     {%- assign prossimi = "" | split: "" -%}
@@ -826,12 +850,12 @@ layout: null
       {%- else %}
       <li>
         <span class="ag-date"></span>
-        <div class="ag-body"><div class="ag-meta" data-en="New dates coming soon">Nuove date in arrivo</div></div>
+        <div class="ag-body"><div class="ag-meta"{% include en.html t=live.nessuna_data_en %}>{{ live.nessuna_data_it | escape }}</div></div>
       </li>
       {%- endfor %}
     </ul>
 
-    <h4 class="live-sub reveal" data-en="Past">Passati</h4>
+    <h4 class="live-sub reveal"{% include en.html t=live.passati_en %}>{{ live.passati_it | escape }}</h4>
     <div class="events">
     {%- for k in passati -%}
     {%- assign i = k | split: "|" | last | plus: 0 -%}
@@ -851,7 +875,7 @@ layout: null
       <div class="event-body">
         <div class="rb-head"><span class="rb-year">{% if e.etichetta %}{{ e.etichetta }}{% else %}{{ e.giorno | date: "%Y" }}{% endif %}</span><h3 class="rb-title">{{ e.titolo }}</h3></div>
         {%- if sub_it != "" %}
-        <p class="rb-sub"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it }}</p>
+        <p class="rb-sub"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it | replace: "Nema Ensemble", '<span class="nema-mark">Nema Ensemble</span>' }}</p>
         {%- endif -%}
         {%- if meta_it != "" %}
         <p class="event-meta"{% if meta_en != meta_it %} data-en="{{ meta_en | escape }}"{% endif %}>{{ meta_it }}</p>
@@ -897,30 +921,33 @@ layout: null
   </section>
 
   <!-- photo band — Nema Ensemble live (Resonant Bends) -->
-  <div class="photoband reveal" data-full="rb_nema2.jpg?v=4" style="--img:url('rb_nema2.jpg?v=4')">
-    <div class="pb-layer"></div>
-    <div class="pb-ghost"></div>
-    <div class="pb-vig"></div>
-    <span class="pb-cap"><b class="nema-mark">Resonant Bends</b> · Spazio Arena, Avellino · 2025</span>
-  </div>
+  {%- include fascia.html f=site.data.fasce.dopo_live %}
 
   <!-- 02 — NEMA -->
   <section id="nema">
-    <div class="sec-head reveal"><span class="idx">02</span><span>Ensemble</span></div>
-    <h2 class="nema-title reveal"><span class="nema-mark">Nema</span> Ensemble</h2>
+    {%- assign nema = site.data.nema -%}
+    {%- assign n_tit = nema.titolo | remove: "<p>" | replace: "</p>", " " | strip | replace: "<strong>", '<span class="nema-mark">' | replace: "</strong>", "</span>" -%}
+    {%- assign n_it = nema.frase_it | remove: "<p>" | replace: "</p>", " " | strip -%}
+    {%- assign n_en = nema.frase_en | remove: "<p>" | replace: "</p>", " " | strip %}
+    <div class="sec-head reveal"><span class="idx">02</span><span{% include en.html t=nema.titolo_sezione_en %}>{{ nema.titolo_sezione_it | escape }}</span></div>
+    <h2 class="nema-title reveal">{{ n_tit }}</h2>
     <div class="nema reveal">
-      <div class="big" data-en="An ensemble for <i>research music</i> — contemporary repertoire, spectral writing, electronics and improvisation.">Un ensemble per la musica <i>di ricerca</i> — repertorio contemporaneo, scrittura spettrale, elettronica e improvvisazione.</div>
+      <div class="big"{% include en.html t=n_en %}>{{ n_it }}</div>
       <div>
-        <img class="nema-logo" src="nema_logo_new.svg" alt="Nema Ensemble">
-        <p data-en="Andrea Riccio is pianist and <strong>artistic director</strong> of the NEMA Ensemble, with which he won the International Ensemble Modern Academy call in Frankfurt. With the ensemble he has conceived projects such as <em>BachBjörk</em> and <em>Resonant Bends</em>, presented at the Accademia Chigiana, the Fondazione Pietà dei Turchini, the Naples Conservatory and the BankAustria Salon in Vienna.">Andrea Riccio è pianista e <strong>direttore artistico</strong> del NEMA Ensemble, con cui ha vinto il bando dell'International Ensemble Modern Academy di Francoforte. Con l'ensemble ha ideato progetti come <em>BachBjörk</em> e <em>Resonant Bends</em>, presentati all'Accademia Chigiana, alla Fondazione Pietà dei Turchini, al Conservatorio di Napoli e al BankAustria Salon di Vienna.</p>
-        <a class="nema-ig nema-mark" href="https://www.instagram.com/nemaensemble/" target="_blank" rel="noopener">Instagram · @nemaensemble ↗</a>
+        {%- if nema.logo %}
+        <img class="nema-logo" src="{{ nema.logo | relative_url }}" alt="Nema Ensemble">
+        {%- endif %}
+        <div class="nema-text"{% include en.html t=nema.testo_en %}>{{ nema.testo_it }}</div>
+        {%- if nema.link_url %}
+        <a class="nema-ig nema-mark" href="{{ nema.link_url | escape }}" target="_blank" rel="noopener">{{ nema.link_testo | escape }} ↗</a>
+        {%- endif %}
       </div>
     </div>
   </section>
 
   <!-- 03 — VIDEO -->
   <section id="video">
-    <div class="sec-head reveal"><span class="idx">03</span><span>Video</span></div>
+    {%- assign vtx = site.data.video_testi -%}<div class="sec-head reveal"><span class="idx">03</span><span{% include en.html t=vtx.titolo_sezione_en %}>{{ vtx.titolo_sezione_it | escape }}</span></div>
     <div class="videos">
       {%- assign ordinati = "" | split: "" -%}
       {%- for v in site.video -%}
@@ -945,27 +972,30 @@ layout: null
   </section>
 
   <!-- photo band — ritratto -->
-  <div class="photoband reveal" data-full="portrait.jpg" style="--img:url('portrait.jpg')">
-    <div class="pb-layer"></div>
-    <div class="pb-ghost"></div>
-    <div class="pb-vig"></div>
-    <span class="pb-cap">Ritratto · <b>📷 @simonavalente_photo</b></span>
-  </div>
+  {%- include fascia.html f=site.data.fasce.dopo_video %}
 </main>
 
 <footer id="contact">
   <div class="footwrap">
-    <div class="sec-head reveal" style="border-color:var(--edge)"><span class="idx">04</span><span data-en="Contacts">Contatti</span></div>
-    <p class="contact-huge reveal"><a href="https://www.instagram.com/mastro.don.riccio/" target="_blank" rel="noopener">@mastro.don.riccio&nbsp;↗</a></p>
+    {%- assign ct = site.data.contatti -%}
+    {%- assign cu = ct.contatto_url | strip -%}
+    {%- unless cu contains "://" or cu contains "mailto:" -%}{%- if cu contains "@" -%}{%- assign cu = "mailto:" | append: cu -%}{%- endif -%}{%- endunless %}
+    <div class="sec-head reveal" style="border-color:var(--edge)"><span class="idx">04</span><span{% include en.html t=ct.titolo_sezione_en %}>{{ ct.titolo_sezione_it | escape }}</span></div>
+    {%- if ct.contatto_testo %}
+    <p class="contact-huge reveal"><a href="{{ cu | escape }}"{% unless cu contains "mailto:" %} target="_blank" rel="noopener"{% endunless %}>{{ ct.contatto_testo | escape | replace: " ", "&nbsp;" }}&nbsp;↗</a></p>
+    {%- endif %}
     <div class="footrow reveal">
-      <span>© 2026 Andrea Riccio</span>
+      <span>{{ ct.copyright | escape }}</span>
       <div class="links">
-        <a href="https://www.instagram.com/mastro.don.riccio/" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.instagram.com/nemaensemble/" target="_blank" rel="noopener">Nema Ensemble</a>
+        {%- for l in ct.link %}
+        <a href="{{ l.url | escape }}" target="_blank" rel="noopener">{{ l.testo | escape }}</a>
+        {%- endfor %}
       </div>
-      <span data-en="Composer · Pianist · Performer">Compositore · Pianista · Turnista</span>
+      <span{% include en.html t=ct.firma_en %}>{{ ct.firma_it | escape }}</span>
     </div>
-    <p class="footnote reveal" data-en="Draft — email &amp; booking to be added.">Bozza — email &amp; booking da inserire.</p>
+    {%- if ct.nota_it and ct.nota_it != "" %}
+    <p class="footnote reveal"{% include en.html t=ct.nota_en %}>{{ ct.nota_it | escape }}</p>
+    {%- endif %}
     <p class="sitecredit" data-en="Website developed by Simone Liguori · <a href=&quot;https://eccerobot.xyz&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;>eccerobot.xyz ↗</a>">Sito sviluppato da Simone Liguori · <a href="https://eccerobot.xyz" target="_blank" rel="noopener">eccerobot.xyz ↗</a></p>
   </div>
 </footer>

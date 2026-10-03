@@ -1,0 +1,15 @@
+{%- comment -%} Fascia fotografica a tutta larghezza. Parametro: f (oggetto con foto, didascalia, grassetto_rosso) {%- endcomment -%}
+{%- assign f = include.f -%}
+{%- if f.foto and f.foto != "" -%}
+{%- assign cap = f.didascalia | remove: "<p>" | replace: "</p>", " " | strip -%}
+{%- if f.grassetto_rosso -%}{%- assign cap = cap | replace: "<strong>", '<b class="nema-mark">' | replace: "</strong>", "</b>" -%}
+{%- else -%}{%- assign cap = cap | replace: "<strong>", "<b>" | replace: "</strong>", "</b>" -%}{%- endif %}
+  <div class="photoband reveal" data-full="{{ f.foto | relative_url }}" style="--img:url('{{ f.foto | relative_url }}')">
+    <div class="pb-layer"></div>
+    <div class="pb-ghost"></div>
+    <div class="pb-vig"></div>
+    {%- if cap != "" %}
+    <span class="pb-cap">{{ cap }}</span>
+    {%- endif %}
+  </div>
+{%- endif -%}
