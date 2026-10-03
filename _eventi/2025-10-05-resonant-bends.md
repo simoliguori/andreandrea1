@@ -1,7 +1,7 @@
 ---
 titolo: Resonant Bends
 giorno: '2025-10-05'
-sottotitolo_it: Nema Ensemble × mi·ɽài — Contemporary Speech
+sottotitolo_it: Nema Ensemble × mi·rài — Contemporary Speech
 sede: Spazio Arena
 citta: Avellino
 mostra_data: true
@@ -11,6 +11,14 @@ programma: Francesco De Simone · Claude Debussy · Tristan Murail · Rouzbeh Ra
 copertina: /uploads/locandina-resonant-bends.jpg
 formato_copertina: locandina
 fuoco_copertina: auto
+galleria:
+- /uploads/rb_nema2.jpg
+- /uploads/resonant-bends-visual-1.jpg
+- /uploads/resonant-bends-visual-2.jpg
+- /uploads/resonant-bends-visual-3.jpg
+formato_galleria: orizzontali
+fuoco_foto_larga: auto
+fuoco_galleria: auto
 crediti:
 - nome: Vincenzo Gaudino
   ruolo: Flauto
@@ -27,7 +35,7 @@ crediti:
   ruolo: Elettronica
 - nome: Cosimo Abbate
   ruolo: Direttore
-- nome: Simone Liguori · mi·ɽài
+- nome: Simone Liguori · mi·rài
   ruolo: Visual
 link:
 - testo: YouTube

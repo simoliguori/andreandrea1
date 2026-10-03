@@ -583,7 +583,8 @@ layout: null
   @media (max-width:640px){.agenda li{grid-template-columns:1fr;gap:8px}}
 
   /* photo gallery inside an event */
-  .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 2px}
+  .gallery{display:grid;grid-template-columns:repeat(var(--cols,4),1fr);gap:8px;margin:8px 0 2px}
+  .gallery.oriz img:not(.wide){aspect-ratio:16/9;object-position:50% 50%}
   .gallery img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 28%;
     filter:grayscale(1) contrast(1.05) brightness(.9);
     transition:filter .55s ease,transform .55s cubic-bezier(.16,1,.3,1)}
@@ -939,7 +940,11 @@ layout: null
         </ul>
         {%- endif -%}
         {%- if e.galleria and e.galleria.size > 0 %}
-        <div class="gallery">
+        {%- assign oriz = false -%}{%- if e.formato_galleria == "orizzontali" -%}{%- assign oriz = true -%}{%- endif -%}
+        {%- assign ncol = e.galleria.size | minus: 1 -%}
+        {%- if oriz -%}{%- assign maxc = 3 -%}{%- else -%}{%- assign maxc = 4 -%}{%- endif -%}
+        {%- if ncol > maxc -%}{%- assign ncol = maxc -%}{%- endif -%}{%- if ncol < 1 -%}{%- assign ncol = 1 -%}{%- endif %}
+        <div class="gallery{% if oriz %} oriz{% endif %}" style="--cols:{{ ncol }}">
           {%- for g in e.galleria %}
           {%- if forloop.first -%}{%- assign fp = fl -%}{%- else -%}{%- assign fp = fg -%}{%- endif %}
           <img src="{{ g | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g | relative_url }}"{% if fp != "" %} style="object-position:{{ fp }}"{% endif %} alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">

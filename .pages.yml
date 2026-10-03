@@ -307,6 +307,17 @@ content:
         description: Puoi caricarne più di una insieme. La prima viene mostrata larga, le altre in griglia.
         options:
           multiple: true
+      - name: formato_galleria
+        label: "Galleria — formato delle foto"
+        type: select
+        default: verticali
+        description: "Verticali per ritratti e foto di scena in piedi; orizzontali per foto larghe (proiezioni, palco intero, video)."
+        options:
+          values:
+            - name: verticali
+              label: Verticali (3:4)
+            - name: orizzontali
+              label: Orizzontali (16:9)
       - name: fuoco_foto_larga
         label: "Galleria — punto focale della prima foto (larga)"
         description: "La prima foto è molto larga e bassa: scegli cosa non deve essere tagliato."
