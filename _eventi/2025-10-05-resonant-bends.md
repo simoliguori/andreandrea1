@@ -42,7 +42,7 @@ crediti:
 - nome: Cosimo Abbate
   ruolo: Direttore
   ruolo_en: Conductor
-- nome: Simone Liguori · mi·rài
+- nome: Simone Liguori
   ruolo: Visual
   ruolo_en: Visuals
 link:
