@@ -1,11 +1,11 @@
 # Fasce fotografiche a tutta larghezza — si modifica dal pannello Pages CMS.
 dopo_info_foto: /uploads/p9.jpg
-dopo_info_full_screen: true
+dopo_info_intera: true
 dopo_info_didascalia: <strong>Andrea Riccio</strong> · Performer
 dopo_live_foto: /uploads/rb_nema2.jpg
-dopo_live_full_screen: true
+dopo_live_intera: true
 dopo_live_didascalia: <strong>Resonant Bends</strong> · Spazio Arena, Avellino · 2025
 dopo_video_foto: /uploads/portrait.jpg
-dopo_video_full_screen: true
+dopo_video_intera: true
 dopo_video_didascalia: Ritratto · <strong>📷 @simonavalente_photo</strong>
 dopo_video_didascalia_en: Portrait · <strong>📷 @simonavalente_photo</strong>

@@ -506,9 +506,12 @@ layout: null
   @media (max-width:1100px){.photoband{height:min(86vh,720px)}}
   .photoband .pb-layer{position:absolute;inset:-10% 0;background:var(--img) center 32%/cover no-repeat;filter:grayscale(1) contrast(1.07) brightness(.9);will-change:transform}
   .photoband .pb-ghost{position:absolute;inset:-10% 0;background:var(--img) center 32%/cover no-repeat;filter:grayscale(1) blur(20px) brightness(1.15);mix-blend-mode:screen;opacity:.15;animation:drift1 11s ease-in-out infinite alternate}
-  .photoband.pb-contenuta .pb-layer{background-size:contain;background-position:center}
-  .photoband.pb-contenuta .pb-ghost{background-size:cover;filter:grayscale(1) blur(28px) brightness(.55);mix-blend-mode:normal;opacity:1;animation:none;z-index:-1}
-  .photoband.pb-contenuta{isolation:isolate}
+  /* foto intera: larga quanto lo schermo, alta quanto serve, sfumata nel nero sopra e sotto */
+  .photoband .pb-img{display:none}
+  .photoband.pb-intera{height:auto}
+  .photoband.pb-intera .pb-layer{display:none}
+  .photoband.pb-intera .pb-img{display:block;width:100%;height:auto;filter:grayscale(1) contrast(1.07) brightness(.9)}
+  .photoband.pb-intera .pb-ghost{inset:0}
   .photoband .pb-vig{position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(120% 120% at 50% 38%,transparent 44%,rgba(8,9,11,.6)),
       linear-gradient(var(--void),transparent 16%,transparent 78%,var(--void))}
