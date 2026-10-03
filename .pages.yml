@@ -561,10 +561,11 @@ content:
         label: 'Fascia dopo "Info" — foto'
         type: image
         description: "La foto a tutta larghezza. Se la togli, la fascia non viene mostrata."
-      - name: dopo_info_intera
-        label: 'Fascia dopo "Info" — foto intera (full screen)'
+      - name: dopo_info_full_screen
+        label: 'Fascia dopo "Info" — full screen'
         type: boolean
-        description: "Accesa: la foto si vede tutta, senza ritaglio né ingrandimento, con lo sfondo sfumato ai lati. Spenta: la foto riempie la fascia (viene ritagliata e ingrandita)."
+        default: true
+        description: "Acceso (consigliato): la foto riempie tutta la fascia da bordo a bordo. Spento: la foto si vede intera, con lo sfondo sfumato ai lati."
       - name: dopo_info_didascalia
         label: 'Fascia dopo "Info" — didascalia'
         type: rich-text
@@ -585,10 +586,11 @@ content:
         label: 'Fascia dopo "Live" — foto'
         type: image
         description: "La foto a tutta larghezza. Se la togli, la fascia non viene mostrata."
-      - name: dopo_live_intera
-        label: 'Fascia dopo "Live" — foto intera (full screen)'
+      - name: dopo_live_full_screen
+        label: 'Fascia dopo "Live" — full screen'
         type: boolean
-        description: "Accesa: la foto si vede tutta, senza ritaglio né ingrandimento, con lo sfondo sfumato ai lati. Spenta: la foto riempie la fascia (viene ritagliata e ingrandita)."
+        default: true
+        description: "Acceso (consigliato): la foto riempie tutta la fascia da bordo a bordo. Spento: la foto si vede intera, con lo sfondo sfumato ai lati."
       - name: dopo_live_didascalia
         label: 'Fascia dopo "Live" — didascalia'
         type: rich-text
@@ -609,10 +611,11 @@ content:
         label: 'Fascia dopo "Video" — foto'
         type: image
         description: "La foto a tutta larghezza. Se la togli, la fascia non viene mostrata."
-      - name: dopo_video_intera
-        label: 'Fascia dopo "Video" — foto intera (full screen)'
+      - name: dopo_video_full_screen
+        label: 'Fascia dopo "Video" — full screen'
         type: boolean
-        description: "Accesa: la foto si vede tutta, senza ritaglio né ingrandimento, con lo sfondo sfumato ai lati. Spenta: la foto riempie la fascia (viene ritagliata e ingrandita)."
+        default: true
+        description: "Acceso (consigliato): la foto riempie tutta la fascia da bordo a bordo. Spento: la foto si vede intera, con lo sfondo sfumato ai lati."
       - name: dopo_video_didascalia
         label: 'Fascia dopo "Video" — didascalia'
         type: rich-text
