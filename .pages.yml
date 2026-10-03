@@ -1,77 +1,115 @@
 # Pannello Pages CMS (https://app.pagescms.org) per il sito di Andrea Riccio.
+# Ogni evento e ogni video è un file a sé: nel pannello si vede la lista, si clicca e si modifica.
 media:
   input: uploads
   output: /uploads
-  categories: [image]
+  categories: [image, document]
   rename: safe
 
 content:
   - name: eventi
     label: Eventi
-    type: file
-    path: _data/eventi.yml
-    format: yaml
-    list:
-      collapsible:
-        collapsed: true
-        summary: "{data} · {titolo}"
+    type: collection
+    path: _eventi
+    format: yaml-frontmatter
+    filename:
+      template: "{giorno}-{titolo}.md"
+      field: false
+    view:
+      fields: [titolo, giorno, luogo_it]
+      primary: titolo
+      sort: [giorno, titolo]
+      search: [titolo, luogo_it]
+      default:
+        sort: giorno
+        order: desc
     fields:
+      # — Intestazione della card —
       - name: titolo
         label: Titolo
         type: string
         required: true
-      - name: data
+        description: Il titolo grande dell'evento.
+      - name: giorno
         label: Data
         type: date
         required: true
-        description: Se la data è futura l'evento va in "Prossimi", altrimenti in "Passati". Il sito si aggiorna da solo ogni notte.
+        description: Data futura → l'evento compare in "Prossimi". Dopo la data passa da solo in "Passati" (il sito si aggiorna ogni notte).
         options:
           format: yyyy-MM-dd
-      - name: data_fine
-        label: Data di fine (facoltativa)
+      - name: giorno_fine
+        label: Data di fine
         type: date
-        description: Solo per eventi di più giorni.
+        description: Facoltativa, solo per eventi di più giorni (es. 11–13 settembre).
         options:
           format: yyyy-MM-dd
       - name: ora
-        label: Orario (facoltativo)
+        label: Orario
         type: string
-        description: Per esempio h21
-      - name: mostra_data
-        label: Mostra la data accanto al luogo
-        type: boolean
-        default: true
+        description: Facoltativo, compare nell'agenda dei Prossimi. Es. "h21".
       - name: etichetta
-        label: Etichetta (facoltativa)
+        label: Etichetta accanto al titolo
         type: string
-        description: Il testo piccolo accanto al titolo. Se vuoto, viene usato l'anno.
+        description: Facoltativa. Se vuota viene mostrato l'anno (es. "2026").
       - name: sottotitolo_it
-        label: Sottotitolo (IT)
-        type: string
+        label: Sottotitolo (italiano)
+        type: rich-text
+        description: La riga in maiuscoletto sotto al titolo. Es. "Recital · direzione artistica Cesare Picco".
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: sottotitolo_en
-        label: Sottotitolo (EN)
-        type: string
+        label: Sottotitolo (inglese)
+        type: rich-text
+        description: Se vuoto, in inglese resta quello italiano.
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: luogo_it
-        label: Luogo (IT)
+        label: Luogo (italiano)
         type: string
-        description: Per esempio "Teatro San Carlo · Napoli"
+        description: Es. "Aula Magna, Università Bocconi · Milano". La data viene aggiunta in automatico dopo il luogo.
       - name: luogo_en
-        label: Luogo (EN)
+        label: Luogo (inglese)
         type: string
         description: Se vuoto viene usato quello italiano.
+      - name: mostra_data
+        label: Mostra la data dopo il luogo
+        type: boolean
+        default: true
+        description: Togli la spunta per eventi senza una data precisa da mostrare.
+      # — Testo —
       - name: descrizione_it
-        label: Descrizione (IT)
-        type: text
+        label: Descrizione (italiano)
+        type: rich-text
+        description: Il paragrafo di presentazione. Puoi usare grassetto e corsivo.
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: descrizione_en
-        label: Descrizione (EN)
-        type: text
+        label: Descrizione (inglese)
+        type: rich-text
+        description: Se vuota, in inglese resta quella italiana.
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: programma
         label: Programma
-        type: string
-        description: Per esempio "Claude Debussy · John Cage · Philip Glass"
+        type: rich-text
+        description: Gli autori in programma, separati da " · ". Es. "Claude Debussy · John Cage · Philip Glass".
+        options:
+          format: html
+          media: false
+          switcher: false
+      # — Foto —
       - name: copertina
         label: Foto di copertina
         type: image
+        description: L'immagine a sinistra della card (e il flyer).
       - name: formato_copertina
         label: Formato della copertina
         type: select
@@ -79,34 +117,26 @@ content:
         options:
           values:
             - name: normale
-              label: Normale
+              label: Normale (proporzioni originali)
             - name: ritaglio
-              label: Ritagliata (verticale 4:5)
+              label: Ritagliata verticale 4:5
             - name: locandina
-              label: Locandina
+              label: Locandina (centrata)
       - name: galleria
         label: Galleria foto
-        type: object
-        description: La prima foto viene mostrata larga.
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{alt}"
-        fields:
-          - name: foto
-            label: Foto
-            type: image
-            required: true
-          - name: alt
-            label: Descrizione della foto (per accessibilità)
-            type: string
+        type: image
+        description: Puoi caricarne più di una insieme. La prima viene mostrata larga, le altre in griglia.
+        options:
+          multiple: true
       - name: credito_foto
         label: Crediti fotografici
         type: string
-        description: Per esempio "Luca Eleuteri · courtesy Fondazione MAXXI"
+        description: Compare sotto la galleria con 📷. Es. "Luca Eleuteri · courtesy Fondazione MAXXI".
+      # — Musicisti, link, allegati —
       - name: crediti
         label: Musicisti e crediti
         type: object
+        description: Elenco nome / ruolo (es. "Andrea Riccio — Pianoforte"). "Evidenzia" lo mette in risalto.
         list:
           collapsible:
             collapsed: true
@@ -124,6 +154,7 @@ content:
       - name: link
         label: Link
         type: object
+        description: Link esterni sotto la card (articoli, video, sito dell'evento).
         list:
           collapsible:
             collapsed: true
@@ -132,33 +163,69 @@ content:
           - name: testo
             label: Testo del link
             type: string
+            required: true
           - name: url
             label: Indirizzo (URL)
             type: string
+            required: true
+      - name: allegati
+        label: Allegati (PDF)
+        type: object
+        description: Programma di sala, locandina, cartella stampa… Compaiono come link scaricabili sotto la card.
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{testo}"
+        fields:
+          - name: file
+            label: File
+            type: file
+            required: true
+          - name: testo
+            label: Testo del link
+            type: string
+            required: true
+            description: Es. "Programma di sala".
 
   - name: video
     label: Video
-    type: file
-    path: _data/video.yml
-    format: yaml
-    list:
-      collapsible:
-        collapsed: true
-        summary: "{titolo}"
+    type: collection
+    path: _video
+    format: yaml-frontmatter
+    filename:
+      template: "{titolo}.md"
+      field: false
+    view:
+      fields: [titolo, autore, ordine]
+      primary: titolo
+      sort: [ordine, titolo]
+      default:
+        sort: ordine
+        order: asc
     fields:
+      - name: titolo
+        label: Titolo
+        type: rich-text
+        required: true
+        description: Es. "Claude Debussy — Étude n.11". Il corsivo viene mantenuto.
+        options:
+          format: html
+          media: false
+          switcher: false
+      - name: autore
+        label: Autore / interpreti
+        type: string
+        description: La riga piccola sotto al titolo. Es. "Nema Ensemble".
       - name: youtube
         label: Link YouTube
         type: string
         required: true
-        description: Incolla il link del video, per esempio https://www.youtube.com/watch?v=...
-      - name: titolo
-        label: Titolo
-        type: string
-        required: true
-      - name: autore
-        label: Autore / interpreti
-        type: string
+        description: Incolla il link del video, es. https://www.youtube.com/watch?v=… oppure https://youtu.be/…
+      - name: ordine
+        label: Posizione
+        type: number
+        description: I video sono mostrati dal numero più basso al più alto.
       - name: miniatura
-        label: Miniatura (facoltativa)
+        label: Miniatura
         type: image
-        description: Se vuota viene usata quella di YouTube.
+        description: Facoltativa. Se vuota viene usata quella di YouTube.

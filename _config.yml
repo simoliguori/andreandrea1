@@ -4,3 +4,8 @@ exclude:
   - README.md
   - nitsch
   - "l'aquila"
+collections:
+  eventi:
+    output: false
+  video:
+    output: false

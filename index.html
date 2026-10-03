@@ -500,7 +500,9 @@ layout: null
   .rb-title{font-family:var(--f-display);font-weight:500;font-size:clamp(30px,5.4vw,66px);line-height:1;margin:0;color:var(--glow)}
   .rb-sub{flex-basis:100%;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin:0}
   .rb-desc{color:var(--smoke);max-width:64ch;margin:0}
-  .rb-desc i{color:var(--bone);font-style:italic}
+  .rb-desc i,.rb-desc em{color:var(--bone);font-style:italic}
+  .rb-desc p{margin:0}
+  .rb-desc p+p{margin-top:.9em}
   .rb-credits{list-style:none;padding:0;margin:6px 0 0;
     display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:2px 28px}
   .rb-credits li{display:flex;justify-content:space-between;gap:14px;align-items:baseline;
@@ -791,11 +793,11 @@ layout: null
     {%- assign oggi = site.time | date: "%Y-%m-%d" -%}
     {%- assign prossimi = "" | split: "" -%}
     {%- assign passati = "" | split: "" -%}
-    {%- for e in site.data.eventi -%}
-      {%- if e.data == nil or e.data == "" -%}{%- continue -%}{%- endif -%}
-      {%- assign inizio = e.data | date: "%Y-%m-%d" -%}
+    {%- for e in site.eventi -%}
+      {%- if e.giorno == nil or e.giorno == "" -%}{%- continue -%}{%- endif -%}
+      {%- assign inizio = e.giorno | date: "%Y-%m-%d" -%}
       {%- assign fine = inizio -%}
-      {%- if e.data_fine and e.data_fine != "" -%}{%- assign fine = e.data_fine | date: "%Y-%m-%d" -%}{%- endif -%}
+      {%- if e.giorno_fine and e.giorno_fine != "" -%}{%- assign fine = e.giorno_fine | date: "%Y-%m-%d" -%}{%- endif -%}
       {%- assign chiave = inizio | append: " " | append: e.ora | append: "|" | append: forloop.index0 -%}
       {%- if fine >= oggi -%}{%- assign prossimi = prossimi | push: chiave -%}{%- else -%}{%- assign passati = passati | push: chiave -%}{%- endif -%}
     {%- endfor -%}
@@ -804,17 +806,20 @@ layout: null
     <ul class="agenda reveal">
       {%- for k in prossimi -%}
       {%- assign i = k | split: "|" | last | plus: 0 -%}
-      {%- assign e = site.data.eventi[i] -%}
-      {%- capture data_en -%}{% include data.html d=e.data f=e.data_fine lang="en" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}{%- endcapture %}
+      {%- assign e = site.eventi[i] -%}
+      {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- capture data_en -%}{% include data.html d=e.giorno f=e.giorno_fine lang="en" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}{%- endcapture %}
       <li>
-        <span class="ag-date" data-en="{{ data_en | escape }}">{% include data.html d=e.data f=e.data_fine lang="it" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}</span>
+        <span class="ag-date" data-en="{{ data_en | escape }}">{% include data.html d=e.giorno f=e.giorno_fine lang="it" short=true %}{% if e.ora %} <span class="ag-time">{{ e.ora }}</span>{% endif %}</span>
         <div class="ag-body">
           <div class="ag-title">{{ e.titolo }}</div>
-          {%- if e.sottotitolo_it %}
-          <div class="ag-meta"{% if e.sottotitolo_en %} data-en="{{ e.sottotitolo_en | escape }}"{% endif %}>{{ e.sottotitolo_it }}</div>
+          {%- if sub_it != "" %}
+          <div class="ag-meta"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it }}</div>
           {%- endif -%}
-          {%- if e.programma %}
-          <div class="ag-prog">{{ e.programma }}</div>
+          {%- if prog != "" %}
+          <div class="ag-prog">{{ prog }}</div>
           {%- endif %}
         </div>
       </li>
@@ -830,9 +835,12 @@ layout: null
     <div class="events">
     {%- for k in passati -%}
     {%- assign i = k | split: "|" | last | plus: 0 -%}
-    {%- assign e = site.data.eventi[i] -%}
-    {%- capture meta_it -%}{{ e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_it %} — {% endif %}{% include data.html d=e.data f=e.data_fine lang="it" %}{% endunless %}{%- endcapture -%}
-    {%- capture meta_en -%}{{ e.luogo_en | default: e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_en or e.luogo_it %} — {% endif %}{% include data.html d=e.data f=e.data_fine lang="en" %}{% endunless %}{%- endcapture %}
+    {%- assign e = site.eventi[i] -%}
+      {%- assign sub_it = e.sottotitolo_it | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- assign sub_en = e.sottotitolo_en | remove: "<p>" | replace: "</p>", " " | strip -%}
+      {%- assign prog = e.programma | remove: "<p>" | replace: "</p>", " " | strip -%}
+    {%- capture meta_it -%}{{ e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_it %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="it" %}{% endunless %}{%- endcapture -%}
+    {%- capture meta_en -%}{{ e.luogo_en | default: e.luogo_it }}{% unless e.mostra_data == false %}{% if e.luogo_en or e.luogo_it %} — {% endif %}{% include data.html d=e.giorno f=e.giorno_fine lang="en" %}{% endunless %}{%- endcapture %}
 
     <div class="event reveal{% unless e.copertina %} noflyer{% endunless %}">
       {%- if e.copertina %}
@@ -841,18 +849,18 @@ layout: null
       </div>
       {%- endif %}
       <div class="event-body">
-        <div class="rb-head"><span class="rb-year">{% if e.etichetta %}{{ e.etichetta }}{% else %}{{ e.data | date: "%Y" }}{% endif %}</span><h3 class="rb-title">{{ e.titolo }}</h3></div>
-        {%- if e.sottotitolo_it %}
-        <p class="rb-sub"{% if e.sottotitolo_en %} data-en="{{ e.sottotitolo_en | escape }}"{% endif %}>{{ e.sottotitolo_it }}</p>
+        <div class="rb-head"><span class="rb-year">{% if e.etichetta %}{{ e.etichetta }}{% else %}{{ e.giorno | date: "%Y" }}{% endif %}</span><h3 class="rb-title">{{ e.titolo }}</h3></div>
+        {%- if sub_it != "" %}
+        <p class="rb-sub"{% if sub_en != "" %} data-en="{{ sub_en | escape }}"{% endif %}>{{ sub_it }}</p>
         {%- endif -%}
         {%- if meta_it != "" %}
         <p class="event-meta"{% if meta_en != meta_it %} data-en="{{ meta_en | escape }}"{% endif %}>{{ meta_it }}</p>
         {%- endif -%}
         {%- if e.descrizione_it %}
-        <p class="rb-desc"{% if e.descrizione_en %} data-en="{{ e.descrizione_en | escape }}"{% endif %}>{{ e.descrizione_it }}</p>
+        <div class="rb-desc"{% if e.descrizione_en %} data-en="{{ e.descrizione_en | escape }}"{% endif %}>{{ e.descrizione_it }}</div>
         {%- endif -%}
-        {%- if e.programma %}
-        <p class="program"><span class="plabel" data-en="Programme">Programma</span> {{ e.programma }}</p>
+        {%- if prog != "" %}
+        <p class="program"><span class="plabel" data-en="Programme">Programma</span> {{ prog }}</p>
         {%- endif -%}
         {%- if e.crediti and e.crediti.size > 0 %}
         <ul class="rb-credits">
@@ -864,17 +872,20 @@ layout: null
         {%- if e.galleria and e.galleria.size > 0 %}
         <div class="gallery">
           {%- for g in e.galleria %}
-          <img src="{{ g.foto | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g.foto | relative_url }}" alt="{{ g.alt | default: e.titolo | strip_html | escape }}" loading="lazy">
+          <img src="{{ g | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g | relative_url }}" alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">
           {%- endfor %}
         </div>
         {%- endif -%}
         {%- if e.credito_foto %}
         <p class="photo-credit">📷 {{ e.credito_foto }}</p>
         {%- endif -%}
-        {%- if e.link and e.link.size > 0 %}
+        {%- if e.link.size > 0 or e.allegati.size > 0 %}
         <div class="rb-links">
           {%- for l in e.link %}
           <a href="{{ l.url | escape }}" target="_blank" rel="noopener">{{ l.testo }} ↗</a>
+          {%- endfor %}
+          {%- for a in e.allegati %}
+          <a href="{{ a.file | relative_url }}" target="_blank" rel="noopener">{{ a.testo }} ↓</a>
           {%- endfor %}
         </div>
         {%- endif %}
@@ -911,14 +922,23 @@ layout: null
   <section id="video">
     <div class="sec-head reveal"><span class="idx">03</span><span>Video</span></div>
     <div class="videos">
-      {%- for v in site.data.video -%}
+      {%- assign ordinati = "" | split: "" -%}
+      {%- for v in site.video -%}
+        {%- assign k = v.ordine | default: 999 | plus: 10000 | append: "|" | append: forloop.index0 -%}
+        {%- assign ordinati = ordinati | push: k -%}
+      {%- endfor -%}
+      {%- assign ordinati = ordinati | sort -%}
+      {%- for k in ordinati -%}
+      {%- assign i = k | split: "|" | last | plus: 0 -%}
+      {%- assign v = site.video[i] -%}
+      {%- assign vt = v.titolo | remove: "<p>" | replace: "</p>", " " | strip -%}
       {%- assign yt = v.youtube | strip | split: "v=" | last | split: "&" | first | split: "youtu.be/" | last | split: "?" | first | split: "/" | last -%}
       {%- if v.miniatura and v.miniatura != "" -%}{%- assign th = v.miniatura | relative_url -%}{%- else -%}{%- assign th = "https://i.ytimg.com/vi/" | append: yt | append: "/hqdefault.jpg" -%}{%- endif -%}
-      {%- assign tt = v.titolo | strip_html | escape %}
+      {%- assign tt = vt | strip_html | escape %}
       <button type="button" class="vcard reveal" data-yt="{{ yt }}" aria-label="Play — {{ tt }}">
         <div class="thumb"><img src="{{ th }}" alt="{{ tt }}" loading="lazy"></div>
         <span class="vplay" aria-hidden="true"></span>
-        <span class="vmeta"><span class="vt">{{ v.titolo }}</span>{% if v.autore %}<span class="va">{{ v.autore }}</span>{% endif %}</span>
+        <span class="vmeta"><span class="vt">{{ vt }}</span>{% if v.autore %}<span class="va">{{ v.autore }}</span>{% endif %}</span>
       </button>
       {%- endfor %}
     </div>
