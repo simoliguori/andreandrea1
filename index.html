@@ -946,7 +946,7 @@ layout: null
         {%- assign ncol = e.galleria.size | minus: 1 -%}
         {%- if oriz -%}{%- assign maxc = 3 -%}{%- else -%}{%- assign maxc = 4 -%}{%- endif -%}
         {%- if ncol > maxc -%}{%- assign ncol = maxc -%}{%- endif -%}{%- if ncol < 1 -%}{%- assign ncol = 1 -%}{%- endif %}
-        <div class="gallery{% if oriz %} oriz{% endif %}" style="--cols:{{ ncol }}">
+        <div class="gallery{% if oriz %} oriz{% endif %}"{% if oriz %} style="--cols:{{ ncol }}"{% endif %}>
           {%- for g in e.galleria %}
           {%- if forloop.first -%}{%- assign fp = fl -%}{%- else -%}{%- assign fp = fg -%}{%- endif %}
           <img src="{{ g | relative_url }}"{% if forloop.first %} class="wide"{% endif %} data-full="{{ g | relative_url }}"{% if fp != "" %} style="object-position:{{ fp }}"{% endif %} alt="{{ e.titolo | strip_html | escape }} — foto {{ forloop.index }}" loading="lazy">
