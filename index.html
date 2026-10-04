@@ -240,7 +240,7 @@ layout: null
   }
 
   /* NAME OVERLAY */
-  .hero-inner{position:relative;z-index:3;text-align:center;padding:0 var(--gutter);width:100%;display:flex;justify-content:center}
+  .hero-inner{position:relative;text-align:center;padding:0 var(--gutter);width:100%;display:flex;justify-content:center}
 
   /* ==== justified all-caps slash block — filled square over the photo ==== */
   .titleblock{
@@ -260,6 +260,11 @@ layout: null
     animation:chroma 6.5s linear infinite;
   }
   .tb-line .txt{flex:0 0 auto}
+  /* le righe sopra la foto (z-index qui, non sul contenitore, così possono fondersi con la foto) */
+  .tb-line{position:relative;z-index:3}
+  /* righe sotto il nome: inversione bianco/nero come il menu in alto */
+  .tb-line:not(.l1){mix-blend-mode:difference;color:#fff;text-shadow:none}
+  .tb-line:not(.l1) .slash{color:#fff;opacity:.6}
   .tb-line .slash{
     flex:0 0 auto;white-space:nowrap;
     letter-spacing:.3em;font-weight:300;
@@ -329,7 +334,7 @@ layout: null
   @keyframes tbIn{
     from{opacity:0;filter:blur(26px) grayscale(1) contrast(1.35) brightness(1.15);transform:scale(1.05)}
     55%{opacity:1;filter:blur(9px) grayscale(1) contrast(1.15)}
-    to{opacity:1;filter:blur(0) grayscale(0) contrast(1) brightness(1);transform:scale(1)}
+    to{opacity:1;filter:none;transform:none}
   }
   .eyebrow{
     font-family:var(--f-mono);font-size:11px;letter-spacing:.42em;
