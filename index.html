@@ -260,17 +260,10 @@ layout: null
     animation:chroma 6.5s linear infinite;
   }
   .tb-line .txt{flex:0 0 auto}
-  /* finita l'animazione d'ingresso (classe .ready dallo script) le righe sotto il nome
-     si fondono con la foto: inversione bianco/nero come il menu in alto */
-  .hero-inner.ready{z-index:auto}
-  .hero-inner.ready .titleblock{animation:none;opacity:1;filter:none;transform:none}
-  .hero-inner.ready .tb-line{position:relative;z-index:3}
-  .hero-inner.ready .tb-line:not(.l1){mix-blend-mode:difference;color:#fff;text-shadow:none}
-  .hero-inner.ready .tb-line:not(.l1) .slash{color:#fff;opacity:.6}
   .tb-line .slash{
     flex:0 0 auto;white-space:nowrap;
     letter-spacing:.3em;font-weight:300;
-    color:var(--smoke);opacity:.45;
+    color:var(--glow);
     -webkit-user-select:none;user-select:none;
   }
   /* dynamic placement per line — asymmetric rhythm */
@@ -1159,16 +1152,6 @@ layout: null
         card.querySelector('.thumb').appendChild(f);
       });
     });
-  })();
-
-  // ===== intestazione: attiva l'inversione delle righe a fine animazione d'ingresso =====
-  (function(){
-    var hi=document.querySelector('.hero-inner'), tb=document.querySelector('.titleblock');
-    if(!hi||!tb) return;
-    function ready(){ hi.classList.add('ready'); }
-    if(getComputedStyle(tb).animationName==='none'){ ready(); return; }
-    tb.addEventListener('animationend',function(e){ if(e.animationName==='tbIn') ready(); });
-    setTimeout(ready,3000);
   })();
 
   // ===== favicon: breve glitch ogni tanto, come il nome nell'intestazione =====
